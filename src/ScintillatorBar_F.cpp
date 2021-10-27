@@ -23,7 +23,7 @@ ScintillatorBar_F::ScintillatorBar_F(unsigned int bIndex) : fBarIndex(bIndex), f
 }
 
 ScintillatorBar_F::ScintillatorBar_F(ushort barIndex, UInt_t qlong, ULong64_t tstamp, UInt_t wtime, Int_t deltstamp)
-    : fBarIndex(barIndex/2), fQlong(qlong), fTstamp(tstamp), fTime(wtime), fDelt(deltstamp)
+    : fBarIndex(barIndex / 2), fQlong(qlong), fTstamp(tstamp), fTime(wtime), fDelt(deltstamp)
 {
 }
 
@@ -41,7 +41,7 @@ void ScintillatorBar_F::Print()
   std::cout << "-----------------------------------------------" << std::endl;
   std::cout << "BarIndex : " << fBarIndex << " : LayerIndex : " << GetLayerIndex()
             << " : BAR Name : " << vecOfBarsNamess[fBarIndex] << " :  Energy :  " << GetQMean() // Corrected()
-            << " : DelT : " << GetDelT() << " : ";                                              // std::endl;
+            << " : DelT : " << GetDelT() << std::endl;
 }
 
 ScintillatorBar_F::~ScintillatorBar_F() {}
@@ -75,16 +75,37 @@ Double_t ScintillatorBar_F::GetQMean()
 {
   return sqrt(GetQNear() * GetQFar());
 }
-
+Double_t ScintillatorBar_F::GetQMeanCorrected()
+{
+  //  return GetQMean();
+  return (20. / (1. * GetPeakPos(vecOfBarsNamess[fBarIndex]))) * GetQMean();
+}
 Long_t ScintillatorBar_F::GetDelT() const
 {
   return fDelt;
 }
 
+Long_t ScintillatorBar_F::GetTStampNear() const
+{
+  return fTstamp;
+}
+
+Long_t ScintillatorBar_F::GetTStampFar()
+{
+  return (fTstamp - fDelt);
+}
+
+Long_t ScintillatorBar_F::GetTStampSmall()
+{
+  if (fDelt < 0)
+    return GetTStampNear();
+  else
+    return GetTStampFar();
+}
+
 Long_t ScintillatorBar_F::GetDelTCorrected()
 {
   return (fDelt - GetOffsetCorrection());
-  // return fDelt;
 }
 
 double ScintillatorBar_F::GetOffsetCorrection()
