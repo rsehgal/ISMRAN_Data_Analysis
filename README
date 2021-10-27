@@ -1,0 +1,18 @@
+README file for ISRMAN data analysis code.
+
+Processing file in small chunks
+--------------------------------
+
+Processing a complete file in single shots needs a lot of RAM,
+So a better idea would be to process the data in chunks.
+
+To do that a Shots mechanism is implemented,
+which is controlled by a shell script **runshots.sh** kept in **scripts** directory.
+
+To use shots mechanism copy the runshots.sh file in you build directory and run it by
+providing following required arguements
+
+. runshots.sh <Full data file path> <number of shots>
+
+For e.g.
+. runshots.sh ~/DevShare/test_PartialShield_Muon_11hrs56mins02secs_07Oct2021_Run77.root 4

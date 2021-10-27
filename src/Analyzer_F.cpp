@@ -8,6 +8,10 @@
 #include "ScintillatorBar_F.h"
 
 namespace ismran {
+
+unsigned int Analyzer_F::numOfShots = 1;
+unsigned int Analyzer_F::shotNo     = 1;
+
 Analyzer_F::Analyzer_F() {}
 Analyzer_F::Analyzer_F(std::string datafilename)
 {
@@ -39,15 +43,21 @@ void Analyzer_F::LoadData()
   Long64_t nEntries = tr->GetEntries();
   std::cout << "Total number of Entries : " << nEntries << std::endl;
   Long64_t nb = 0;
-  for (Long64_t iev = 0; iev < nEntries; iev++) {
-    // for (Long64_t iev = (shotNo - 1) * numOfEventsInOneShot; iev < shotNo * numOfEventsInOneShot; iev++) {
+
+  /* Injecting shots mechanism */
+  unsigned long int numOfEventsInOneShot = nEntries / numOfShots;
+  Long64_t startEvNo = (shotNo - 1) * numOfEventsInOneShot;
+  Long64_t endEvNo   = shotNo * numOfEventsInOneShot;
+
+  //for (Long64_t iev = 0; iev < nEntries; iev++) {
+  for (Long64_t iev = startEvNo; iev < endEvNo; iev++) {
     nb += tr->GetEntry(iev);
     if (0) std::cout << fBrCh << " , " << fQlong << " , " << fTstamp << " , " << fTime << " , " << fDelt << std::endl;
 
     fVecOfScint_F.push_back(new ScintillatorBar_F(fBrCh, fQlong, fTstamp, fTime, fDelt));
 
     if (iev % 1000000 == 0) {
-      //times->Set(time, kTRUE, offset, kFALSE);
+      // times->Set(time, kTRUE, offset, kFALSE);
       std::cout << " Processing event : " << iev << "\t" << times->GetTimeSpec() << std::endl;
     }
 
@@ -56,7 +66,8 @@ void Analyzer_F::LoadData()
   fp->Close();
 }
 
-std::vector<ScintillatorBar_F *> Analyzer_F::GetVectorOfScintillators(){
-return fVecOfScint_F;
+std::vector<ScintillatorBar_F *> Analyzer_F::GetVectorOfScintillators()
+{
+  return fVecOfScint_F;
 }
 } // namespace ismran

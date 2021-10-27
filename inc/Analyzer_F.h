@@ -25,6 +25,15 @@ public:
   ~Analyzer_F();
   void LoadData();
   std::vector<ScintillatorBar_F *> GetVectorOfScintillators();
+
+public:
+  /*
+   * Variable for Shots mechanism
+   * useful for batch submission and process big
+   * data files in chunks
+   */
+  static unsigned int numOfShots;
+  static unsigned int shotNo;
 };
 } // namespace ismran
 
