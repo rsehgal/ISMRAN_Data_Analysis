@@ -80,7 +80,7 @@ public:
   // Destructor
   virtual ~ScintillatorBar_F();
 
-  //  ClassDef(ScintillatorBar_F, 1)
+  ClassDef(ScintillatorBar_F, 1)
 };
 } // namespace ismran
 #endif /* ISMRAN_ANALYSIS_INC_SCINTILLATORBAR_H_ */

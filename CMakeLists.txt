@@ -83,9 +83,13 @@ include_directories(${PROJECT_SOURCE_DIR}/inc)
 
 #target_link_libraries(Tracklib ${ROOT_LIBRARIES})
 
+ROOT_GENERATE_DICTIONARY(G__IsmranAnalysis inc/ScintillatorBar_F.h inc/SingleMuonTrack.h LINKDEF inc/DictLinkDef.h)
+add_library(DictLib SHARED src/ScintillatorBar_F.cpp src/SingleMuonTrack.cpp  G__IsmranAnalysis.cxx)
+target_link_libraries(DictLib ${ROOT_LIBRARIES})
+
 file(GLOB analysisSources ${PROJECT_SOURCE_DIR}/src/*.cpp) 
 add_library(Analysis SHARED ${analysisSources})
-target_link_libraries(Analysis ${ROOT_LIBRARIES})# Tracklib)
+target_link_libraries(Analysis ${ROOT_LIBRARIES} DictLib)
 
 
 #file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cpp  ../inc/*.cpp ../ml/*.cpp)

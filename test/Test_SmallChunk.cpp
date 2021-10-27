@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 #if(1)
   unsigned int trackCounter = 0;
   for (unsigned int i = 0; i < smtVec.size(); i++) {
-    if (trackCounter < 5) {
+    if (trackCounter < 10) {
       if (smtVec[i]->size() > 2) {
         smtVec[i]->Print();
         trackCounter++;

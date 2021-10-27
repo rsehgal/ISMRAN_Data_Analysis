@@ -4,10 +4,13 @@
 **	username : rsehgal
 */
 
-#include <vector>
 
 #ifndef SingleMuonTrack_h
 #define SingleMuonTrack_h
+
+#include <vector>
+#pragma once
+#include <TROOT.h>
 
 namespace ismran {
 
@@ -49,6 +52,8 @@ public:
   void Print();
 
   ~SingleMuonTrack();
+
+  ClassDef(SingleMuonTrack, 1)
 };
 
 } // namespace ismran

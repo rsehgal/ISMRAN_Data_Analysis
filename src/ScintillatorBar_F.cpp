@@ -5,7 +5,7 @@
 //#include "Analyzer.h"
 #include "colors.h"
 #define cm 10
-// ClassImp(ismran::ScintillatorBar_F);
+ClassImp(ismran::ScintillatorBar_F);
 namespace ismran {
 
 ScintillatorBar_F::ScintillatorBar_F()

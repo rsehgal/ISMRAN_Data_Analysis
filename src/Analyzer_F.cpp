@@ -77,6 +77,11 @@ std::vector<SingleMuonTrack*> Analyzer_F::ReconstructMuonTrack()
   std::cout << "ScintVectSize : " << scintVecSize << std::endl;
   SingleMuonTrack *singleMuonTrack = new SingleMuonTrack();
   std::vector<SingleMuonTrack *> smtVec;
+
+  TFile *tracksFile      = new TFile("MuonTracks.root", "RECREATE");
+  TTree *tracksTree      = new TTree("TracksTree", "TracksTree");
+  tracksTree->Branch("MuonTracks", "ismran::SingleMuonTrack", &singleMuonTrack);
+
   ULong64_t tStart                 = fVecOfScint_F[0]->GetTStampSmall();
   for (unsigned int i = 1; i < scintVecSize; i++) {
     if (fVecOfScint_F[i]->GetQMeanCorrected() > qmeanCorrThreshold) {
@@ -89,6 +94,7 @@ std::vector<SingleMuonTrack*> Analyzer_F::ReconstructMuonTrack()
         singleMuonTrack->Sort();
         //singleMuonTrack->Print();
 	smtVec.push_back(new SingleMuonTrack(*singleMuonTrack));
+	tracksTree->Fill();
 	singleMuonTrack->clear();
      	singleMuonTrack->push_back(fVecOfScint_F[i]);
         tStart = fVecOfScint_F[i]->GetTStampSmall();
@@ -97,6 +103,8 @@ std::vector<SingleMuonTrack*> Analyzer_F::ReconstructMuonTrack()
     }
   }
 std::cout << "SmtVec size : " << smtVec.size() << std::endl;
+tracksTree->Write();
+tracksFile->Close();
 return smtVec;
 }
 

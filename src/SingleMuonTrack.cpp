@@ -17,6 +17,8 @@
 //#include "HelperFunctions.h"
 #include "colors.h"
 
+ClassImp(ismran::SingleMuonTrack)
+
 namespace ismran {
 
 SingleMuonTrack::SingleMuonTrack() {}
