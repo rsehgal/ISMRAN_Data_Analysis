@@ -4,7 +4,6 @@
 **	username : rsehgal
 */
 
-
 #ifndef SingleMuonTrack_h
 #define SingleMuonTrack_h
 
@@ -45,6 +44,13 @@ public:
    * Required Getters
    */
   std::vector<ScintillatorBar_F *> GetMuonTrack() const;
+
+  /*
+   * Some Critical Helper fuction of Muon Track
+   */
+  bool SingleHitInEachLayer();
+  bool SingleHitInLayer(unsigned int layerIndex);
+  unsigned int NumOfHitsInLayer(unsigned int layerNum);
 
   /*
    * Print functions
