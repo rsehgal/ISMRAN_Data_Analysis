@@ -24,7 +24,7 @@ int main()
 
   unsigned int layerIndex = 9;
   bool startFlag          = false;
-  TH1F *histMuonRate      = new TH1F("Muon Rate Estimation", "", 70, 30, 100);
+  TH1F *histMuonRate      = new TH1F("Muon Rate Estimation", "", 100, 0, 100);
 
   for (unsigned int i = 0; i < smtVec.size(); i++) {
     if (smtVec[i]->SingleHitInLayer(layerIndex)) {
@@ -46,7 +46,37 @@ int main()
     }
   }
 
-  histMuonRate->Draw();
+  //  histMuonRate->Draw();
+  //  TF1 *formula = new TF1("Formula", "expo", 0.2, 50.);
+  TF1 *f2 = new TF1("f2", "([1]*exp(-x/[0])) + [2] ", 0.01, 250.01);
+  f2->SetParName(0, "#tau");
+  f2->SetParName(1, "N_{0}");
+  // f2->SetParName(3,"#tau5");
+  f2->SetParName(2, "C");
+  f2->SetParameter(0, 50);
+  f2->SetParameter(1, 10);
+  f2->SetParameter(2, 10);
+  // f2->SetParameter(3, 10);
+  f2->SetLineStyle(2);
+  f2->SetLineColor(2);
+
+  histMuonRate->Fit("f2", "R");
+  // histMuonRate->Fit(formula, "qn");
+
+  histMuonRate->GetYaxis()->SetRangeUser(0, 10000);
+  histMuonRate->Draw("p");
+  histMuonRate->SetMarkerStyle(8);
+  histMuonRate->SetMarkerSize(1.);
+  f2->SetLineWidth(4);
+  f2->Draw("same");
+  // formula->SetLineWidth(4);
+  // formula->Draw("same");
+
+  TLegend *legendRate = new TLegend(0.2, 0.2, .8, .8);
+  legendRate->AddEntry(histMuonRate, "Data", "p");
+  legendRate->AddEntry(f2, "Fit", "l");
+  legendRate->Draw("same");
+
   fApp->Run();
   return 0;
 }

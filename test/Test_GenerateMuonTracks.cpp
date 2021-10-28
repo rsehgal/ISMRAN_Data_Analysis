@@ -12,11 +12,11 @@
 
 int main(int argc, char *argv[])
 {
-  unsigned int numOfEvents = 10000;
+  unsigned int numOfEvents = 0;
   ismran::Analyzer_F an(argv[1], numOfEvents);
   std::vector<ismran::ScintillatorBar_F *> vecOfScint = an.GetVectorOfScintillators();
   std::vector<ismran::SingleMuonTrack *> smtVec       = an.ReconstructMuonTrack();
-#if(1)
+#if (0)
   unsigned int trackCounter = 0;
   for (unsigned int i = 0; i < smtVec.size(); i++) {
     if (trackCounter < 10) {
