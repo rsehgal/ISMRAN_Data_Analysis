@@ -24,9 +24,12 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/modules)
 #option(USE_CALIBRATION "Use Calibration data for Sampling of time" OFF)
 #option(USE_FOR_SIMULATION "Use Analyzer for simulated data" OFF)
 #option(STAGGERED_GEOM "Use Scattered geometry configurtion" OFF)
-#option(SINGLE_POINT_CALIBRATION "Use Single Point Muon Calibration" ON)
+option(SINGLE_POINT_CALIBRATION "Use Single Point Muon Calibration" ON)
 #option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
 #option(FINGER_PATTERN_CONDITION "Flag to see the finger plot of layers" OFF)
+if(SINGLE_POINT_CALIBRATION)
+add_definitions(-DSINGLE_POINT_CALIBRATION)
+endif(SINGLE_POINT_CALIBRATION)
 
 #if(FINGER_PATTERN_CONDITION)
 #add_definitions(-DUSE_CRITICAL_COND)
@@ -38,9 +41,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/modules)
 #  find_package(Geant4 REQUIRED)
 #endif()
 #
-#if(SINGLE_POINT_CALIBRATION)
-#add_definitions(-DSINGLE_POINT_CALIBRATION)
-#endif(SINGLE_POINT_CALIBRATION)
 #
 #
 #if(STAGGERED_GEOM)

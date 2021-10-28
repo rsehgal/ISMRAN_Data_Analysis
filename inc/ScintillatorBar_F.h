@@ -55,13 +55,21 @@ public:
   UInt_t GetQNear();
   UInt_t GetQFar();
   Double_t GetQMean();
+  //Function to get the corrected QMean
+  Double_t GetQMeanCorrected();
+
+  //Timing related function
   Long_t GetDelT() const;
+  //Function to get the corrected delT
   Long_t GetDelTCorrected();
+  //Function to get the delT offset
   double GetOffsetCorrection();
   Long_t GetTStampNear() const;
   Long_t GetTStampFar();
   Long_t GetTStampSmall();
-  Double_t GetQMeanCorrected();
+
+  //Function to get the parameterization
+  TF1* GetZParameterization();
 
   // double GetLogQNearByQFar() { return log((1. * GetQLongFar()) / (1. * GetQLongNear())); }
 
