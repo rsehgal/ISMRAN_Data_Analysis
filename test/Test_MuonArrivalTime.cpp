@@ -37,7 +37,9 @@ int main()
           } else {
             endTime       = scintVec[j]->GetTStampNear();
             Long64_t diff = endTime - startTime;
+#ifdef VERBOSE
             std::cout << "Diff : " << diff << std::endl;
+#endif
             startTime = endTime;
             histMuonRate->Fill(diff / 1e+9);
           }

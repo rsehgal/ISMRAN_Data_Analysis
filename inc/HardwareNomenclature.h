@@ -11,7 +11,7 @@ namespace ismran {
 extern std::vector<std::string> vecOfBarsNamess;
 extern std::vector<std::string> sequentialBarNames;
 extern std::vector<unsigned int> vecOfPeakPos;
-
+extern std::vector<std::string> vecOfPsBars;
 
 extern unsigned int GetIndexFromBarName(std::string barName);
 unsigned int GetPeakPos(std::string barName);

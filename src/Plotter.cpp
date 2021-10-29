@@ -6,7 +6,8 @@
 #include <vector>
 #include "ScintillatorBar_F.h"
 #include <TH1F.h>
-#include "Mapping.h"
+#include "HardwareNomenclature.h"
+//#include "Mapping.h"
 #include "Plotter.h"
 namespace ismran {
 std::vector<TH1F *> vecOfQNearHist;
