@@ -14,6 +14,7 @@
 #include "PsBar.h"
 #include "Helpers.h"
 #include <TApplication.h>
+#include "HardwareNomenclature.h"
 int main()
 {
   TApplication *fApp                            = new TApplication("Test", NULL, NULL);
@@ -25,12 +26,17 @@ int main()
   unsigned int layerIndex = 9;
   bool startFlag          = false;
   TH1F *histMuonRate      = new TH1F("Muon Rate Estimation", "", 100, 0, 100);
-
+  TH1F *histBarNum = new TH1F("BarNumHist","BarNumHist",90,0,90);
   for (unsigned int i = 0; i < smtVec.size(); i++) {
     if (smtVec[i]->SingleHitInLayer(layerIndex)) {
       std::vector<ismran::ScintillatorBar_F *> scintVec = smtVec[i]->GetMuonTrack();
       for (unsigned int j = 0; j < scintVec.size(); j++) {
         if (scintVec[j]->GetLayerIndex() == layerIndex) {
+
+	  std::string tempBarName = ismran::vecOfPsBars[scintVec[j]->GetBarIndex()];
+	  //std::cout << tempBarName.substr(2,2) << std::endl;	  
+	  histBarNum->Fill(std::stoi(tempBarName.substr(2,2)));
+
           if (!startFlag) {
             startFlag = true;
             startTime = scintVec[j]->GetTStampNear();
@@ -41,7 +47,7 @@ int main()
             std::cout << "Diff : " << diff << std::endl;
 #endif
             startTime = endTime;
-            histMuonRate->Fill(diff / 1e+9);
+            if (diff > 0.) histMuonRate->Fill(diff / 1e+9);
           }
         }
       }
@@ -79,6 +85,8 @@ int main()
   legendRate->AddEntry(f2, "Fit", "l");
   legendRate->Draw("same");
 
+  new TCanvas("BarNumHist","BarNumHist");
+  histBarNum->Draw();
   fApp->Run();
   return 0;
 }

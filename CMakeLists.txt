@@ -96,6 +96,7 @@ target_link_libraries(Analysis ${ROOT_LIBRARIES})
 
 SET(TESTSDIR ${TESTSDIR}
 ${CMAKE_SOURCE_DIR}/test
+${CMAKE_SOURCE_DIR}/test/calib
 )
 
 #COLLECTING ALL TEST FILES

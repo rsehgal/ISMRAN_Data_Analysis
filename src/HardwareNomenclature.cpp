@@ -58,6 +58,21 @@ std::vector<unsigned int> vecOfPeakPos = {
     9600,  10100, 9750,  5000,  9800,  11600};
 
 //Dhurva Mapping
+//Physical Map
+/*  
+    //DO NOT APPLY CLANG-FORMATTING
+    "L--0", "L--1", "L--2", "L--3", "L--4", "L--5", "L--6", "L--7", "L--8", "L--9"
+    "PS51", "PS52", "PS53", "PS54", "PS55", "PS56", "PS57", "PS58", "PS84", "PS85"
+    "PS88", "PS59", "PS60", "PS61", "PS62", "PS63", "PS30", "PS29", "PS74", "PS75"
+    "PS87", "PS10", "PS08", "PS64", "PS66", "PS68", "PS20", "PS18", "PS77", "PS76",
+    "PS86", "PS07", "PS09", "PS65", "PS67", "PS69", "PS70", "PS19", "PS78", "PS79",
+    "PS41", "PS42", "PS43", "PS44", "PS45", "PS46", "PS47", "PS48", "PS49", "PS50", 
+    "PS31", "PS32", "PS33", "PS34", "PS35", "PS36", "PS37", "PS38", "PS39", "PS40", 
+    "PS05", "PS06", "PS80", "PS81", "PS82", "PS83", "PS90", "PS72", "PS01", "PS02",
+    "PS03", "PS04", "PS13", "PS14", "PS15", "PS16", "PS17", "PS89", "PS27", "PS28",
+    "PS71", "PS73", "PS11", "PS12", "PS21", "PS22", "PS23", "PS24", "PS25", "PS26",
+    "PS91","PS92","PS93","PS94","PS95","PS96"
+*/
 std::vector<std::string> vecOfPsBars = {
     "PS51_S1AA6644", "PS52_S1AA6515", "PS53_S1AA6713", "PS54_S1AA6645", "PS55_S1AA6646", "PS56_S1AA6647",
     "PS57_S1AA6705", "PS58_S1AA6712", "PS84_SF882",    "PS85_SF881",    "PS88_SF880",    "PS59_S1AA6640",
