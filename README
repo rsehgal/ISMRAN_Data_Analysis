@@ -1,5 +1,26 @@
 README file for ISRMAN data analysis code.
 
+
+--------------------------------
+Dependencies :  ROOT
+--------------------------------
+
+--------------------------------
+Compiling the code
+--------------------------------
+First clone the code using
+git clone http://github.com/rsehgal/ISMRAN_Data_Analysis
+
+
+cd ISMRAN_Data_Analysis
+mkdir build
+cd build
+cmake ..
+make -j2
+ 
+
+
+--------------------------------
 Processing file in small chunks
 --------------------------------
 
