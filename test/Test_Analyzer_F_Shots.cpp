@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
     }
   }
   std::vector<TH1F *> vecOfQMeanHist = ismran::GetQMeanPlots(vecOfScint);
+  std::vector<TH1F *> vecOfQMeanCorrectedHist = ismran::GetQMeanCorrectedPlots(vecOfScint);
   //std::string outputFileName = "Hists_Shot_"+std::to_string(ismran::Analyzer_F::shotNo)+".root";
   //TFile *fp = new TFile("hists.root", "RECREATE");
   TFile *fp = new TFile(outputFileName.c_str(), "RECREATE");
@@ -41,6 +42,7 @@ int main(int argc, char *argv[])
       vecOfQMeanHist[i]->Draw("same");
     fp->cd();
     vecOfQMeanHist[i]->Write();
+    vecOfQMeanCorrectedHist[i]->Write();
   }
 
   fp->cd();

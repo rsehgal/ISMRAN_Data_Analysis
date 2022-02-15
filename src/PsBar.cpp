@@ -18,7 +18,7 @@ std::vector<TH1D *> vecOfEnergyHist;
 std::vector<TH1D *> vecOfTimeDiffHist;
 std::vector<unsigned int> vecOfdeltaTMin;
 std::vector<unsigned int> vecOfdeltaTMax;
-double qmeanCorrThreshold                  = 15.;
+double qmeanCorrThreshold                  = 10.;
 double qmeanCorrThresholdUpper             = 25.;
 int qstart                                 = 3000;
 int qend                                   = 25000;
