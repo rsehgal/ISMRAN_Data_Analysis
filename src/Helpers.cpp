@@ -6,7 +6,23 @@
 
 #include "Helpers.h"
 #include "SingleMuonTrack.h"
+#include <iostream>
+#include <vector>
+#include <string>
+#include <experimental/filesystem>
+#include "colors.h"
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+using std::experimental::filesystem::directory_iterator;
+
 namespace ismran {
+
+std::string GetBaseName(std::string const &path)
+{
+  return path.substr(path.find_last_of("/\\") + 1);
+}
 
 bool CompareTimestampScintillator(ScintillatorBar_F *i1, ScintillatorBar_F *i2)
 {
@@ -34,6 +50,16 @@ std::vector<ismran::SingleMuonTrack *> GetMuonTracksVector(std::string filename,
   }
   fp->Close();
   return smtVec;
+}
+
+std::vector<std::string> GetVectorOfFileNameInADirectory(std::string directoryPath)
+{
+  std::vector<std::string> vecOfFileNames;
+  for (const auto &file : directory_iterator(directoryPath)) {
+    std::experimental::filesystem::path filepath = file.path();
+    vecOfFileNames.push_back(filepath.string());
+  }
+  return vecOfFileNames;
 }
 
 } // namespace ismran

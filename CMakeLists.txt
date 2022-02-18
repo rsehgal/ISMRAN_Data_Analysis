@@ -89,7 +89,7 @@ include_directories(${PROJECT_SOURCE_DIR}/inc)
 #target_link_libraries(Tracklib ${ROOT_LIBRARIES})
 
 
-ROOT_GENERATE_DICTIONARY(G__IsmranAnalysis inc/ScintillatorBar_F.h inc/SingleMuonTrack.h LINKDEF inc/DictLinkDef.h)
+ROOT_GENERATE_DICTIONARY(G__IsmranAnalysis inc/ScintillatorBar_F.h inc/SingleMuonTrack.h inc/MuonPeakAnalyzer.h LINKDEF inc/DictLinkDef.h)
 file(GLOB analysisSources ${PROJECT_SOURCE_DIR}/src/*.cpp) 
 add_library(Analysis SHARED ${analysisSources} G__IsmranAnalysis.cxx)
 target_link_libraries(Analysis ${ROOT_LIBRARIES})
@@ -110,7 +110,7 @@ macro(build_executables EXECUTABLES)
   foreach(EXECUTABLE ${EXECUTABLES})
     get_filename_component(TARGET_NAME ${EXECUTABLE} NAME_WE)
     add_executable(${TARGET_NAME} ${EXECUTABLE} ${headers} ${sources})
-    target_link_libraries(${TARGET_NAME} ${ROOT_LIBRARIES} Analysis)
+    target_link_libraries(${TARGET_NAME} ${ROOT_LIBRARIES} Analysis Spectrum stdc++fs)
  endforeach()
 endmacro()
 

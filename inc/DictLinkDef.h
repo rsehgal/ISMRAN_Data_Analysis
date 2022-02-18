@@ -15,4 +15,5 @@
 #pragma link C++ class ismran::ScintillatorBar_F+;
 #pragma link C++ class std::vector<ismran::ScintillatorBar_F*>+;
 #pragma link C++ class ismran::SingleMuonTrack+;
+#pragma link C++ class ismran::MuonPeakAnalyzer+;
 #endif
