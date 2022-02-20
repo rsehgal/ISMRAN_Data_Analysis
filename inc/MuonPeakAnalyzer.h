@@ -14,6 +14,7 @@ namespace ismran {
 class MuonPeakAnalyzer {
   std::string fFileName;
   std::vector<unsigned int> fVecOfPeakPos;
+  unsigned int fFileTime;
 
 public:
   MuonPeakAnalyzer();
@@ -22,6 +23,7 @@ public:
   std::vector<unsigned int> GetVectorOfPeakPositions()const;
   std::string GetFileName()const;
   unsigned int GetRunNumber();
+  unsigned int GetFileTime()const;
   unsigned int FindMuonPeakPos(TH1F *hist);
   void FillMuonPeakPosVector();
   void SetFileName(std::string filename); 

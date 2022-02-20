@@ -14,13 +14,17 @@ unsigned int Analyzer_F::numOfShots = 1;
 unsigned int Analyzer_F::shotNo     = 1;
 
 Analyzer_F::Analyzer_F() {}
-Analyzer_F::Analyzer_F(std::string datafilename,unsigned int numOfEvents)
+Analyzer_F::Analyzer_F(std::string datafilename, unsigned int numOfEvents)
 {
   fDatafileName = datafilename;
   LoadData(numOfEvents);
 }
 Analyzer_F::~Analyzer_F() {}
 
+unsigned int Analyzer_F::GetFileTime() const
+{
+  return fFileTime;
+}
 /*Function to load the data and in the vector of Scintillator_F*/
 void Analyzer_F::LoadData(unsigned int numOfEvents)
 {
@@ -42,8 +46,7 @@ void Analyzer_F::LoadData(unsigned int numOfEvents)
 
   TTimeStamp *times = new TTimeStamp();
   Long64_t nEntries = tr->GetEntries();
-  if(numOfEvents > 0)
-	nEntries = numOfEvents;
+  if (numOfEvents > 0) nEntries = numOfEvents;
   std::cout << "Total number of Entries : " << nEntries << std::endl;
   Long64_t nb = 0;
 
@@ -54,7 +57,13 @@ void Analyzer_F::LoadData(unsigned int numOfEvents)
 
   // for (Long64_t iev = 0; iev < nEntries; iev++) {
   for (Long64_t iev = startEvNo; iev < endEvNo; iev++) {
+    //std::cout << "inside event loop......." << std::endl;
     nb += tr->GetEntry(iev);
+    if (iev == 0) {
+      fFileTime = fTime;
+      std::cout << "FileTime : " << fFileTime << " : " << __FILE__ << std::endl;
+    }
+
     if (0) std::cout << fBrCh << " , " << fQlong << " , " << fTstamp << " , " << fTime << " , " << fDelt << std::endl;
 
     fVecOfScint_F.push_back(new ScintillatorBar_F(fBrCh, fQlong, fTstamp, fTime, fDelt));
@@ -69,7 +78,7 @@ void Analyzer_F::LoadData(unsigned int numOfEvents)
   fp->Close();
 }
 
-std::vector<SingleMuonTrack*> Analyzer_F::ReconstructMuonTrack()
+std::vector<SingleMuonTrack *> Analyzer_F::ReconstructMuonTrack()
 {
   std::cout << "Going to Create Muon Tracks.................." << std::endl;
   std::sort(fVecOfScint_F.begin(), fVecOfScint_F.end(), CompareTimestampScintillator);
@@ -78,11 +87,11 @@ std::vector<SingleMuonTrack*> Analyzer_F::ReconstructMuonTrack()
   SingleMuonTrack *singleMuonTrack = new SingleMuonTrack();
   std::vector<SingleMuonTrack *> smtVec;
 
-  TFile *tracksFile      = new TFile("MuonTracks.root", "RECREATE");
-  TTree *tracksTree      = new TTree("TracksTree", "TracksTree");
+  TFile *tracksFile = new TFile("MuonTracks.root", "RECREATE");
+  TTree *tracksTree = new TTree("TracksTree", "TracksTree");
   tracksTree->Branch("MuonTracks", "ismran::SingleMuonTrack", &singleMuonTrack);
 
-  ULong64_t tStart                 = fVecOfScint_F[0]->GetTStampSmall();
+  ULong64_t tStart = fVecOfScint_F[0]->GetTStampSmall();
   for (unsigned int i = 1; i < scintVecSize; i++) {
     if (fVecOfScint_F[i]->GetQMeanCorrected() > qmeanCorrThreshold) {
       if (std::fabs(fVecOfScint_F[i]->GetTStampSmall() - tStart) < 20000) {
@@ -90,22 +99,21 @@ std::vector<SingleMuonTrack*> Analyzer_F::ReconstructMuonTrack()
         singleMuonTrack->push_back(fVecOfScint_F[i]);
         if (fVecOfScint_F[i]->GetTStampSmall() < tStart) tStart = fVecOfScint_F[i]->GetTStampSmall();
       } else {
-	//Previous muon event over
+        // Previous muon event over
         singleMuonTrack->Sort();
-        //singleMuonTrack->Print();
-	smtVec.push_back(new SingleMuonTrack(*singleMuonTrack));
-	tracksTree->Fill();
-	singleMuonTrack->clear();
-     	singleMuonTrack->push_back(fVecOfScint_F[i]);
+        // singleMuonTrack->Print();
+        smtVec.push_back(new SingleMuonTrack(*singleMuonTrack));
+        tracksTree->Fill();
+        singleMuonTrack->clear();
+        singleMuonTrack->push_back(fVecOfScint_F[i]);
         tStart = fVecOfScint_F[i]->GetTStampSmall();
-        
       }
     }
   }
-std::cout << "SmtVec size : " << smtVec.size() << std::endl;
-tracksTree->Write();
-tracksFile->Close();
-return smtVec;
+  std::cout << "SmtVec size : " << smtVec.size() << std::endl;
+  tracksTree->Write();
+  tracksFile->Close();
+  return smtVec;
 }
 
 std::vector<ScintillatorBar_F *> Analyzer_F::GetVectorOfScintillators()

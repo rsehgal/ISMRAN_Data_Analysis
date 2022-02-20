@@ -51,6 +51,8 @@ unsigned int MuonPeakAnalyzer::GetRunNumber() {}
 void MuonPeakAnalyzer::FillMuonPeakPosVector()
 {
   ismran::Analyzer_F an(fFileName);
+  fFileTime = an.GetFileTime();
+  std::cout << "FileTime : " << fFileTime << std::endl;
   std::vector<ismran::ScintillatorBar_F *> vecOfScint = an.GetVectorOfScintillators();
   ismran::InitializeHistograms();
   std::vector<TH1F *> vecOfQMeanHist = ismran::GetQMeanPlots(vecOfScint);
@@ -80,5 +82,10 @@ unsigned int MuonPeakAnalyzer::FindMuonPeakPos(TH1F *hist)
   }
 
   return (int)xpeaks[nfound - 1];
+}
+
+unsigned int MuonPeakAnalyzer::GetFileTime() const
+{
+  return fFileTime;
 }
 } // namespace ismran

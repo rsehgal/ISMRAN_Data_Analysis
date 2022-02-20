@@ -19,6 +19,7 @@ class Analyzer_F {
 private:
   std::string fDatafileName;
   std::vector<ScintillatorBar_F *> fVecOfScint_F;
+  unsigned int fFileTime;
 
 public:
   Analyzer_F();
@@ -27,6 +28,7 @@ public:
   void LoadData(unsigned int numOfEvents);
   std::vector<ScintillatorBar_F *> GetVectorOfScintillators();
   std::vector<SingleMuonTrack *> ReconstructMuonTrack();
+  unsigned int GetFileTime()const;
 
 public:
   /*
