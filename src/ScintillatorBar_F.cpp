@@ -6,6 +6,7 @@
 //#include "Analyzer.h"
 #include "colors.h"
 #define cm 10
+#define USHRT_MAX  65535
 ClassImp(ismran::ScintillatorBar_F);
 namespace ismran {
 
