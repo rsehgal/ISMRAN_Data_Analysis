@@ -18,6 +18,8 @@ extern std::vector<TH1F *> GetQNearPlots(std::vector<ScintillatorBar_F *> vecOfS
 extern std::vector<TH1F *> GetQFarPlots(std::vector<ScintillatorBar_F *> vecOfScint_F);
 extern std::vector<TH1F *> GetQMeanPlots(std::vector<ScintillatorBar_F *> vecOfScint_F);
 extern std::vector<TH1F *> GetQMeanCorrectedPlots(std::vector<ScintillatorBar_F *> vecOfScint_F);
+extern std::vector<TH1F *> GetQMeanCorrectedPlots(std::vector<ScintillatorBar_F *> vecOfScint_F,
+                                           std::vector<unsigned int> vecOfPeakPos);
 extern std::vector<TH1F *> GetQPlots(std::vector<ScintillatorBar_F *> vecOfScint_F, unsigned short opt);
 
 extern void InitializeHistograms();

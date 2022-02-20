@@ -8,9 +8,11 @@
 #include "Plotter.h"
 #include <TFile.h>
 #include "ScintillatorBar_F.h"
+#include "Helpers.h"
 int main(int argc, char *argv[])
 {
   std::string fileName = argv[1];
+  std::vector<unsigned int> vecOfPeakPos = ismran::GetPeakPosVec(fileName);
   std::string outputFileName = argv[2];
   
   /* Accepting NumOfShots and ShotNo from the caller or a calling shell script*/
@@ -27,7 +29,7 @@ int main(int argc, char *argv[])
     }
   }
   std::vector<TH1F *> vecOfQMeanHist = ismran::GetQMeanPlots(vecOfScint);
-  std::vector<TH1F *> vecOfQMeanCorrectedHist = ismran::GetQMeanCorrectedPlots(vecOfScint);
+  std::vector<TH1F *> vecOfQMeanCorrectedHist = ismran::GetQMeanCorrectedPlots(vecOfScint,vecOfPeakPos);
   //std::string outputFileName = "Hists_Shot_"+std::to_string(ismran::Analyzer_F::shotNo)+".root";
   //TFile *fp = new TFile("hists.root", "RECREATE");
   TFile *fp = new TFile(outputFileName.c_str(), "RECREATE");

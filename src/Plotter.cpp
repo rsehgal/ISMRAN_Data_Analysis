@@ -24,7 +24,8 @@ void InitializeHistograms()
     vecOfQNearHist.push_back(new TH1F((name + "_QNear").c_str(), (name + "_QNear").c_str(), 1000, 0, 32000));
     vecOfQFarHist.push_back(new TH1F((name + "_QFar").c_str(), (name + "_QFar").c_str(), 1000, 0, 32000));
     vecOfQMeanHist.push_back(new TH1F((name + "_QMean").c_str(), (name + "_QMean").c_str(), 1000, 0, 32000));
-    vecOfQMeanCorrectedHist.push_back(new TH1F((name + "_QMeanCorrected").c_str(), (name + "_QMeanCorrected").c_str(), 100, 0, 100));
+    vecOfQMeanCorrectedHist.push_back(
+        new TH1F((name + "_QMeanCorrected").c_str(), (name + "_QMeanCorrected").c_str(), 100, 0, 100));
   }
 }
 
@@ -45,6 +46,17 @@ std::vector<TH1F *> GetQMeanPlots(std::vector<ScintillatorBar_F *> vecOfScint_F)
 std::vector<TH1F *> GetQMeanCorrectedPlots(std::vector<ScintillatorBar_F *> vecOfScint_F)
 {
   return GetQPlots(vecOfScint_F, 4);
+}
+std::vector<TH1F *> GetQMeanCorrectedPlots(std::vector<ScintillatorBar_F *> vecOfScint_F,
+                                           std::vector<unsigned int> vecOfPeakPos)
+{
+  for (unsigned int i = 0; i < vecOfScint_F.size(); i++) {
+    if (vecOfScint_F[i]->GetBarIndex() < 96) {
+      vecOfQMeanCorrectedHist[vecOfScint_F[i]->GetBarIndex()]->Fill(
+          vecOfScint_F[i]->GetQMeanCorrected(vecOfPeakPos[vecOfScint_F[i]->GetBarIndex()]));
+    }
+  }
+  return vecOfQMeanCorrectedHist;
 }
 
 // std::vector<TH1F *> GetQPlots(std::vector<ScintillatorBar_F *> vecOfScint_F, unsigned short opt)
