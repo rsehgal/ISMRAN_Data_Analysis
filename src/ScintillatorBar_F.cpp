@@ -6,7 +6,7 @@
 //#include "Analyzer.h"
 #include "colors.h"
 #define cm 10
-#define USHRT_MAX  65535
+#define USHRT_MAX 65535
 ClassImp(ismran::ScintillatorBar_F);
 namespace ismran {
 
@@ -54,13 +54,13 @@ ushort ScintillatorBar_F::GetBarIndex() const
 }
 ushort ScintillatorBar_F::GetLayerIndex()
 {
-  //return (fBarIndex / numOfBarsInEachLayer);
+  // return (fBarIndex / numOfBarsInEachLayer);
   return (fBarIndex % numOfLayers);
 }
 
 ushort ScintillatorBar_F::GetBarIndexInLayer()
 {
-  //return (fBarIndex % numOfBarsInEachLayer);
+  // return (fBarIndex % numOfBarsInEachLayer);
   return (fBarIndex / numOfLayers);
 }
 UInt_t ScintillatorBar_F::GetQNear()
@@ -127,13 +127,29 @@ TF1 *ScintillatorBar_F::GetZParameterization()
   return Calibration::instance()->GetCalibrationDataOf(sequentialBarIndex)->GetZParamFormula();
 }
 
+Double_t ScintillatorBar_F::GetQMeanCorrected(unsigned int muonPeakPos)
+{
+  Double_t ener                   = 0.;
+  std::string barName             = vecOfPsBars[fBarIndex];
+  unsigned int sequentialBarIndex = GetIndexFromBarName(barName);
+
+#ifndef SINGLE_POINT_CALIBRATION
+  TF1 *enercalibFormula = Calibration::instance()->GetCalibrationDataOf(sequentialBarIndex)->GetEnergyCalibFormula();
+  ener                  = (enercalibFormula->Eval(GetQMean()));
+  // std::cout << "Predicted Energy : " << ener << std::endl;
+#else
+  // Using single point calibration, and using equation of straight line to get y correspoinding to a x
+  ener = (20. / (1. * muonPeakPos)) * GetQMean();
+#endif
+  return ener;
+}
 
 Double_t ScintillatorBar_F::GetQMeanCorrected()
 {
   {
-    Double_t ener = 0.;
-std::string barName             = vecOfPsBars[fBarIndex];
-  unsigned int sequentialBarIndex = GetIndexFromBarName(barName);
+    Double_t ener                   = 0.;
+    std::string barName             = vecOfPsBars[fBarIndex];
+    unsigned int sequentialBarIndex = GetIndexFromBarName(barName);
 
 #ifndef SINGLE_POINT_CALIBRATION
     TF1 *enercalibFormula = Calibration::instance()->GetCalibrationDataOf(sequentialBarIndex)->GetEnergyCalibFormula();

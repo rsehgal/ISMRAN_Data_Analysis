@@ -57,6 +57,7 @@ public:
   Double_t GetQMean();
   //Function to get the corrected QMean
   Double_t GetQMeanCorrected();
+  Double_t GetQMeanCorrected(unsigned int muonPeakPos);
 
   //Timing related function
   Long_t GetDelT() const;
