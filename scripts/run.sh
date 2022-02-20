@@ -7,7 +7,7 @@ for FILE in $dir/*
 do 
 #((counter=counter+1))
 base_name=$(basename ${FILE})
-outfileName="MuonPeak_"$base_name".root"
+outfileName="MuonPeak_"$base_name
 #echo $counter" : "$base_name
 echo "Processing file : "$FILE
 ./Test_GenerateMuonPeakPosTree $FILE $outfileName

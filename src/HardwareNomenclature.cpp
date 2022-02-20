@@ -104,6 +104,20 @@ unsigned int GetIndexFromBarName(std::string barName)
   return index;
 }
 
+unsigned int GetIndexFromBarName(std::vector<std::string> vecofbarnames, std::string barName)
+{
+  auto it            = find(vecofbarnames.begin(), vecofbarnames.end(), barName);
+  unsigned int index = 10000;
+  // If element was found
+  if (it != vecofbarnames.end()) {
+    // calculating the index of barName
+    index = it - vecofbarnames.begin();
+    // cout << index << endl;
+  }
+  return index;
+}
+
+
 unsigned int GetPeakPos(std::string barName)
 {
   std::vector<std::string>::iterator it;

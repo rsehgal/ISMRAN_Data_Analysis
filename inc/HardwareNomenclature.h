@@ -14,6 +14,7 @@ extern std::vector<unsigned int> vecOfPeakPos;
 extern std::vector<std::string> vecOfPsBars;
 
 extern unsigned int GetIndexFromBarName(std::string barName);
-unsigned int GetPeakPos(std::string barName);
+extern unsigned int GetIndexFromBarName(std::vector<std::string> vecofbarnames, std::string barName)
+extern unsigned int GetPeakPos(std::string barName);
 } // namespace ismran
 #endif

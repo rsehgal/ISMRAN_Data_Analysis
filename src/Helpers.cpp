@@ -11,6 +11,8 @@
 #include <string>
 #include <experimental/filesystem>
 #include "colors.h"
+#include "MuonPeakAnalyzer.h"
+
 using std::cin;
 using std::cout;
 using std::endl;
@@ -61,5 +63,30 @@ std::vector<std::string> GetVectorOfFileNameInADirectory(std::string directoryPa
   }
   return vecOfFileNames;
 }
+
+std::vector<unsigned int> GetPeakPosVec(std::string filename)
+{
+  TFile *fp                              = new TFile(("MuonPeak_" + filename).c_str(), "r");
+  TTree *MuonPeakPositionsTree           = (TTree *)fp->Get("MuonPeakPositionsTree");
+  ismran::MuonPeakAnalyzer *peakAnalyzer = new ismran::MuonPeakAnalyzer;
+  MuonPeakPositionsTree->SetBranchAddress("PeakPositions", &peakAnalyzer);
+  MuonPeakPositionsTree->GetEntry(0);
+  fp->Close();
+  return peakAnalyzer->GetVectorOfPeakPositions();
+}
+
+unsigned int GetPeakPos(std::string filename, std::vector<std::string> vecofbarnames, std::string barName)
+{
+  std::vector<std::string>::iterator it;
+  unsigned int peakPos = 0;
+  it                   = std::find(vecofbarnames.begin(), vecofbarnames.end(), barName);
+  if (it != vecofbarnames.end()) {
+    unsigned int index                   = it - vecofbarnames.begin();
+    std::vector<unsigned int> peakPosVec = GetPeakPosVec(filename);
+    peakPos                              = peakPosVec[index]; // vecOfPeakPos[index];
+  }
+  return peakPos;
+} 
+
 
 } // namespace ismran
