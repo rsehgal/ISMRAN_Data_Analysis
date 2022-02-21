@@ -74,6 +74,16 @@ std::vector<unsigned int> GetPeakPosVec(std::string filename)
   fp->Close();
   return peakAnalyzer->GetVectorOfPeakPositions();
 }
+std::vector<unsigned int> GetPeakPosVec(std::string dirpath,std::string filename)
+{
+  TFile *fp                              = new TFile((dirpath+"/MuonPeak_" + filename).c_str(), "r");
+  TTree *MuonPeakPositionsTree           = (TTree *)fp->Get("MuonPeakPositionsTree");
+  ismran::MuonPeakAnalyzer *peakAnalyzer = new ismran::MuonPeakAnalyzer;
+  MuonPeakPositionsTree->SetBranchAddress("PeakPositions", &peakAnalyzer);
+  MuonPeakPositionsTree->GetEntry(0);
+  fp->Close();
+  return peakAnalyzer->GetVectorOfPeakPositions();
+}
 
 unsigned int GetPeakPos(std::string filename, std::vector<std::string> vecofbarnames, std::string barName)
 {

@@ -26,6 +26,14 @@ MuonPeakAnalyzer::MuonPeakAnalyzer(std::string filename) : fFileName(filename)
   fVecOfPeakPos.clear();
   FillMuonPeakPosVector();
 }
+
+MuonPeakAnalyzer::MuonPeakAnalyzer(MuonPeakAnalyzer &obj) 
+{
+  fFileName = obj.GetFileName();
+  fVecOfPeakPos=obj.GetVectorOfPeakPositions();
+  fFileTime = obj.GetFileTime(); 
+}
+
 void MuonPeakAnalyzer::SetFileName(std::string filename)
 {
   fFileName = filename;
@@ -88,4 +96,10 @@ unsigned int MuonPeakAnalyzer::GetFileTime() const
 {
   return fFileTime;
 }
+
+bool PeakAnalyzerComparator(const MuonPeakAnalyzer *lhs, const MuonPeakAnalyzer *rhs)
+{
+  return lhs->GetFileTime() < rhs->GetFileTime();
+}
+
 } // namespace ismran

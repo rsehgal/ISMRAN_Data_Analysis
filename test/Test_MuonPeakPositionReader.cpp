@@ -19,7 +19,8 @@
 int main(int argc, char *argv[])
 {
   TApplication *fApp                     = new TApplication("Test", NULL, NULL);
-  TFile *fp                              = new TFile("MuonPeak_Feb2022.root", "r");
+  //TFile *fp                              = new TFile("MuonPeak_Feb2022.root", "r");
+  TFile *fp                              = new TFile(argv[1], "r");
   TTree *MuonPeakPositionsTree           = (TTree *)fp->Get("MuonPeakPositionsTree");
   ismran::MuonPeakAnalyzer *peakAnalyzer = new ismran::MuonPeakAnalyzer;
   // Set branch addresses.

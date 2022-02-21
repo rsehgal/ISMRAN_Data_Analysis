@@ -17,6 +17,7 @@ extern std::string GetBaseName(std::string const &path);
 
 //Helper functions to use the peak position file for the current file under processing
 extern std::vector<unsigned int> GetPeakPosVec(std::string filename);
+extern std::vector<unsigned int> GetPeakPosVec(std::string dirpath,std::string filename);
 extern unsigned int GetPeakPos(std::string filename, std::vector<std::string> vecofbarnames, std::string barName);
 
 }

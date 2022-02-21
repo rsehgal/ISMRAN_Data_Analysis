@@ -9,10 +9,16 @@
 #include <TFile.h>
 #include "ScintillatorBar_F.h"
 #include "Helpers.h"
+#include "colors.h"
 int main(int argc, char *argv[])
 {
   std::string fileName = argv[1];
-  std::vector<unsigned int> vecOfPeakPos = ismran::GetPeakPosVec(fileName);
+  std::string peakPosFileLoc = "/home/rsehgal/myAmbar/February2022/muonEnergyCalib";
+  std::string fullPathPeakPosFile=peakPosFileLoc+"/MuonPeak_"+ismran::GetBaseName(fileName);
+  std::cout << RED << fullPathPeakPosFile << RESET << std::endl;
+  //return 0;
+  //std::vector<unsigned int> vecOfPeakPos = ismran::GetPeakPosVec(fullPathPeakPosFile);
+  std::vector<unsigned int> vecOfPeakPos = ismran::GetPeakPosVec(peakPosFileLoc,ismran::GetBaseName(fileName));
   std::string outputFileName = argv[2];
   
   /* Accepting NumOfShots and ShotNo from the caller or a calling shell script*/

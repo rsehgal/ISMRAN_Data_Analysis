@@ -20,15 +20,19 @@ public:
   MuonPeakAnalyzer();
   virtual ~MuonPeakAnalyzer();
   MuonPeakAnalyzer(std::string filename);
-  std::vector<unsigned int> GetVectorOfPeakPositions()const;
-  std::string GetFileName()const;
+  MuonPeakAnalyzer(MuonPeakAnalyzer &obj);
+  std::vector<unsigned int> GetVectorOfPeakPositions() const;
+  std::string GetFileName() const;
   unsigned int GetRunNumber();
-  unsigned int GetFileTime()const;
+  unsigned int GetFileTime() const;
   unsigned int FindMuonPeakPos(TH1F *hist);
   void FillMuonPeakPosVector();
-  void SetFileName(std::string filename); 
-  void UpdateFileName(); 
-  ClassDef(MuonPeakAnalyzer,1)
+  void SetFileName(std::string filename);
+  void UpdateFileName();
+  ClassDef(MuonPeakAnalyzer, 1)
 };
+
+extern bool PeakAnalyzerComparator(const MuonPeakAnalyzer *lhs, const MuonPeakAnalyzer *rhs);
+
 } // namespace ismran
 #endif
