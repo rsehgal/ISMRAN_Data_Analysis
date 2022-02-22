@@ -66,7 +66,7 @@ void Analyzer_F::LoadData(unsigned int numOfEvents)
 
     if (0) std::cout << fBrCh << " , " << fQlong << " , " << fTstamp << " , " << fTime << " , " << fDelt << std::endl;
 
-    fVecOfScint_F.push_back(new ScintillatorBar_F(fBrCh, fQlong, fTstamp, fTime, fDelt));
+    fVecOfScint_F.push_back(std::shared_ptr<ScintillatorBar_F>(new ScintillatorBar_F(fBrCh, fQlong, fTstamp, fTime, fDelt)));
 
     if (iev % 1000000 == 0) {
       // times->Set(time, kTRUE, offset, kFALSE);
@@ -96,7 +96,7 @@ std::vector<SingleMuonTrack *> Analyzer_F::ReconstructMuonTrack()
     if (fVecOfScint_F[i]->GetQMeanCorrected() > qmeanCorrThreshold) {
       if (std::fabs(fVecOfScint_F[i]->GetTStampSmall() - tStart) < 20000) {
         // Within 20ns window
-        singleMuonTrack->push_back(fVecOfScint_F[i]);
+        singleMuonTrack->push_back(fVecOfScint_F[i].get());
         if (fVecOfScint_F[i]->GetTStampSmall() < tStart) tStart = fVecOfScint_F[i]->GetTStampSmall();
       } else {
         // Previous muon event over
@@ -105,7 +105,7 @@ std::vector<SingleMuonTrack *> Analyzer_F::ReconstructMuonTrack()
         smtVec.push_back(new SingleMuonTrack(*singleMuonTrack));
         tracksTree->Fill();
         singleMuonTrack->clear();
-        singleMuonTrack->push_back(fVecOfScint_F[i]);
+        singleMuonTrack->push_back(fVecOfScint_F[i].get());
         tStart = fVecOfScint_F[i]->GetTStampSmall();
       }
     }
@@ -116,7 +116,7 @@ std::vector<SingleMuonTrack *> Analyzer_F::ReconstructMuonTrack()
   return smtVec;
 }
 
-std::vector<ScintillatorBar_F *> Analyzer_F::GetVectorOfScintillators()
+std::vector<std::shared_ptr<ScintillatorBar_F>> Analyzer_F::GetVectorOfScintillators()
 {
   return fVecOfScint_F;
 }
