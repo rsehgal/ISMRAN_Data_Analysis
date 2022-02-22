@@ -8,7 +8,8 @@
 
 #include <vector>
 #include <string>
-
+#include <iostream>
+#include <memory>
 namespace ismran {
 
 class ScintillatorBar_F;
@@ -18,7 +19,7 @@ class Analyzer_F {
 
 private:
   std::string fDatafileName;
-  std::vector<ScintillatorBar_F *> fVecOfScint_F;
+  std::vector<std::shared_ptr<ScintillatorBar_F>> fVecOfScint_F;
   unsigned int fFileTime;
 
 public:
@@ -26,7 +27,7 @@ public:
   Analyzer_F(std::string datafilename,unsigned int numOfEvents=0);
   ~Analyzer_F();
   void LoadData(unsigned int numOfEvents);
-  std::vector<ScintillatorBar_F *> GetVectorOfScintillators();
+  std::vector<std::shared_ptr<ScintillatorBar_F>> GetVectorOfScintillators();
   std::vector<SingleMuonTrack *> ReconstructMuonTrack();
   unsigned int GetFileTime()const;
 

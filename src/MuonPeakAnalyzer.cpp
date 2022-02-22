@@ -61,13 +61,15 @@ void MuonPeakAnalyzer::FillMuonPeakPosVector()
   ismran::Analyzer_F an(fFileName);
   fFileTime = an.GetFileTime();
   std::cout << "FileTime : " << fFileTime << std::endl;
-  std::vector<ismran::ScintillatorBar_F *> vecOfScint = an.GetVectorOfScintillators();
+  std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
   ismran::InitializeHistograms();
-  std::vector<TH1F *> vecOfQMeanHist = ismran::GetQMeanPlots(vecOfScint);
+  std::vector<std::shared_ptr<TH1F>> vecOfQMeanHist = ismran::GetQMeanPlots(vecOfScint);
 
   for (unsigned int i = 0; i < vecOfQMeanHist.size(); i++) {
-    fVecOfPeakPos.push_back(FindMuonPeakPos(vecOfQMeanHist[i]));
+    fVecOfPeakPos.push_back(FindMuonPeakPos(vecOfQMeanHist[i].get()));
   }
+  vecOfQMeanHist.clear();
+  vecOfScint.clear();
 }
 
 unsigned int MuonPeakAnalyzer::FindMuonPeakPos(TH1F *hist)
