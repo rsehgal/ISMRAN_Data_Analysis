@@ -28,7 +28,8 @@ public:
   ~Analyzer_F();
   void LoadData(unsigned int numOfEvents);
   std::vector<std::shared_ptr<ScintillatorBar_F>> GetVectorOfScintillators();
-  std::vector<SingleMuonTrack *> ReconstructMuonTrack();
+  std::vector<std::shared_ptr<SingleMuonTrack>> ReconstructMuonTrack();
+  //std::vector<SingleMuonTrack *> ReconstructMuonTrack();
   unsigned int GetFileTime()const;
 
 public:
