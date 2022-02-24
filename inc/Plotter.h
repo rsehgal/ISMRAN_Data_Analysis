@@ -18,7 +18,7 @@ extern std::vector<std::shared_ptr<TH1F>> GetQNearPlots(std::vector<std::shared_
 extern std::vector<std::shared_ptr<TH1F>> GetQFarPlots(std::vector<std::shared_ptr<ScintillatorBar_F>> vecOfScint_F);
 extern std::vector<std::shared_ptr<TH1F>> GetQMeanPlots(std::vector<std::shared_ptr<ScintillatorBar_F>> vecOfScint_F);
 extern std::vector<std::shared_ptr<TH1F>> GetQMeanCorrectedPlots(std::vector<std::shared_ptr<ScintillatorBar_F>> vecOfScint_F);
-extern std::vector<std::shared_ptr<TH1F>> GetQMeanCorrectedPlots(std::vector<ScintillatorBar_F *> vecOfScint_F,
+extern std::vector<std::shared_ptr<TH1F>> GetQMeanCorrectedPlots(std::vector<std::shared_ptr<ScintillatorBar_F>> vecOfScint_F,
                                            std::vector<unsigned int> vecOfPeakPos);
 extern std::vector<std::shared_ptr<TH1F>> GetQPlots(std::vector<std::shared_ptr<ScintillatorBar_F>> vecOfScint_F, unsigned short opt);
 
