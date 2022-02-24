@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
   ismran::Analyzer_F::shotNo = std::atoi(argv[4]);
 
   ismran::Analyzer_F an(fileName);
-  std::vector<ismran::ScintillatorBar_F *> vecOfScint = an.GetVectorOfScintillators();
+  std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
   ismran::InitializeHistograms();
   for (unsigned int i = 0; i < vecOfScint.size(); i++) {
     if (i < 5) {
@@ -34,8 +34,8 @@ int main(int argc, char *argv[])
       if (vecOfScint[i]->GetBarIndex() < 96) vecOfScint[i]->Print();
     }
   }
-  std::vector<TH1F *> vecOfQMeanHist = ismran::GetQMeanPlots(vecOfScint);
-  std::vector<TH1F *> vecOfQMeanCorrectedHist = ismran::GetQMeanCorrectedPlots(vecOfScint,vecOfPeakPos);
+  std::vector<std::shared_ptr<TH1F>> vecOfQMeanHist = ismran::GetQMeanPlots(vecOfScint);
+  std::vector<std::shared_ptr<TH1F>> vecOfQMeanCorrectedHist = ismran::GetQMeanCorrectedPlots(vecOfScint,vecOfPeakPos);
   //std::string outputFileName = "Hists_Shot_"+std::to_string(ismran::Analyzer_F::shotNo)+".root";
   //TFile *fp = new TFile("hists.root", "RECREATE");
   TFile *fp = new TFile(outputFileName.c_str(), "RECREATE");

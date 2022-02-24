@@ -56,7 +56,7 @@ std::vector<std::shared_ptr<TH1F>> GetQMeanCorrectedPlots(std::vector<std::share
 {
   return GetQPlots(vecOfScint_F, 4);
 }
-std::vector<std::shared_ptr<TH1F>> GetQMeanCorrectedPlots(std::vector<ScintillatorBar_F *> vecOfScint_F,
+std::vector<std::shared_ptr<TH1F>> GetQMeanCorrectedPlots(std::vector<std::shared_ptr<ScintillatorBar_F>> vecOfScint_F,
                                                           std::vector<unsigned int> vecOfPeakPos)
 {
   for (unsigned int i = 0; i < vecOfScint_F.size(); i++) {

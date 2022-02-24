@@ -18,20 +18,23 @@ class ScintillatorBar_F;
 
 class SingleMuonTrack {
 private:
-  std::vector<std::shared_ptr<ScintillatorBar_F>> fVecOfScintillators;
+  std::vector<ScintillatorBar_F*> fVecOfScintillators;
+  //std::vector<std::shared_ptr<ScintillatorBar_F>> fVecOfScintillators;
 
 public:
   /*
    * Various constructors
    */
   SingleMuonTrack();
-  SingleMuonTrack(std::vector<std::shared_ptr<ScintillatorBar_F>> vecOfScintBars);
+  SingleMuonTrack(std::vector<ScintillatorBar_F*> vecOfScintBars);
+  //SingleMuonTrack(std::vector<std::shared_ptr<ScintillatorBar_F>> vecOfScintBars);
   SingleMuonTrack(const SingleMuonTrack &smt);
 
   /*
    * Sorting related functions
    */
-  static bool CompareBarIndexInScintillator(std::shared_ptr<ScintillatorBar_F> i1, std::shared_ptr<ScintillatorBar_F> i2);
+  static bool CompareBarIndexInScintillator(ScintillatorBar_F *i1, ScintillatorBar_F *i2);
+  //static bool CompareBarIndexInScintillator(std::shared_ptr<ScintillatorBar_F> i1, std::shared_ptr<ScintillatorBar_F> i2);
   void Sort();
 
   /*
@@ -44,7 +47,8 @@ public:
   /*
    * Required Getters
    */
-  std::vector<std::shared_ptr<ScintillatorBar_F>> GetMuonTrack() const;
+  //std::vector<std::shared_ptr<ScintillatorBar_F>> GetMuonTrack() const;
+  std::vector<ScintillatorBar_F*> GetMuonTrack() const;
 
   /*
    * Some Critical Helper fuction of Muon Track

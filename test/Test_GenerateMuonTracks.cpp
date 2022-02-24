@@ -15,7 +15,8 @@ int main(int argc, char *argv[])
   unsigned int numOfEvents = 0;
   ismran::Analyzer_F an(argv[1], numOfEvents);
   std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
-  std::vector<std::shared_ptr<ismran::SingleMuonTrack>> smtVec       = an.ReconstructMuonTrack();
+  //std::vector<std::shared_ptr<ismran::SingleMuonTrack>> smtVec       = an.ReconstructMuonTrack();
+  std::vector<ismran::SingleMuonTrack*> smtVec       = an.ReconstructMuonTrack();
 #if (0)
   unsigned int trackCounter = 0;
   for (unsigned int i = 0; i < smtVec.size(); i++) {

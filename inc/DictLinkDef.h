@@ -1,6 +1,6 @@
 // See: https://root.cern.ch/selecting-dictionary-entries-linkdefh
 //#ifdef __CINT__
-#ifdef __CLING__
+#ifdef __ROOTCLING__
 
 #pragma link off all globals;
 #pragma link off all classes;
