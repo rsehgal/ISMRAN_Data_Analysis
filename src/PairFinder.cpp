@@ -1,7 +1,8 @@
 #include "PairFinder.h"
 #include "includes.hh"
 #include "TreeEntry.h"
-
+#include "Helpers.h"
+#include "colors.h"
 namespace ismran {
 
 unsigned int PairFinder::numOfShots = 0;
@@ -91,6 +92,22 @@ void PairFinder::CheckPairs()
 
 void PairFinder::ValidatePairs()
 {
+  std::string transFileName = ("Transformed_" + ismran::GetBaseName(fDatafileName));
+  std::cout << RED << "Transformed file Name : " << transFileName << RESET << std::endl;
+  TFile *fp   = new TFile(transFileName.c_str(), "RECREATE");
+  TTree *tree = new TTree("ftree", "ftree");
+  UShort_t fBrCh;
+  ULong64_t fTstamp;
+  UInt_t fTime;
+  UInt_t fQlong;
+  Int_t fDelt;
+
+  tree->Branch("fBrCh", &fBrCh, "fBrCh/s");
+  tree->Branch("fTstamp", &fTstamp, "fTstamp/l");
+  tree->Branch("fTime", &fTime, "fTime/i");
+  tree->Branch("fQlong", &fQlong, "fQlong/i");
+  tree->Branch("fDelt", &fDelt, "fDelt/I");
+
   std::cout << "=============== Validating Pairs ==================" << std::endl;
   std::cout << "Size of vector to be validated : " << fVecOfPairedTreeEntry.size() << std::endl;
   unsigned int counter         = 0;
@@ -132,11 +149,20 @@ void PairFinder::ValidatePairs()
       // Lets push it to new vector which later replace the old one and get itself cleared
       vecOfValidatedPairedTreeEntry.push_back(fVecOfPairedTreeEntry[i]);
       vecOfValidatedPairedTreeEntry.push_back(fVecOfPairedTreeEntry[i + 1]);
+      fBrCh   = fVecOfPairedTreeEntry[i]->brch;
+      fTstamp = fVecOfPairedTreeEntry[i]->tstamp;
+      fTime   = fVecOfPairedTreeEntry[i]->time;
+      fQlong  = ismran::GetFoldedQNearQFar(fVecOfPairedTreeEntry[i]->qlong, fVecOfPairedTreeEntry[i + 1]->qlong);
+      fDelt   = fVecOfPairedTreeEntry[i]->tstamp - fVecOfPairedTreeEntry[i + 1]->tstamp;
+      tree->Fill();
     }
 
     i += 2;
   }
 
+  fp->cd();
+  tree->Write();
+  fp->Close();
   fVecOfPairedTreeEntry.clear();
   for (unsigned long int i = 0; i < vecOfValidatedPairedTreeEntry.size(); i++) {
     fVecOfPairedTreeEntry.push_back(vecOfValidatedPairedTreeEntry[i]);

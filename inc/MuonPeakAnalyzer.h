@@ -19,14 +19,14 @@ class MuonPeakAnalyzer {
 public:
   MuonPeakAnalyzer();
   virtual ~MuonPeakAnalyzer();
-  MuonPeakAnalyzer(std::string filename);
+  MuonPeakAnalyzer(std::string filename,unsigned int barIndex=500);
   MuonPeakAnalyzer(MuonPeakAnalyzer &obj);
   std::vector<unsigned int> GetVectorOfPeakPositions() const;
   std::string GetFileName() const;
   unsigned int GetRunNumber();
   unsigned int GetFileTime() const;
   unsigned int FindMuonPeakPos(TH1F *hist);
-  void FillMuonPeakPosVector();
+  void FillMuonPeakPosVector(unsigned int barIndex=500);
   void SetFileName(std::string filename);
   void UpdateFileName();
   ClassDef(MuonPeakAnalyzer, 1)

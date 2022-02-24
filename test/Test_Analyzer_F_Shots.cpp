@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
 {
   std::string fileName = argv[1];
   std::string peakPosFileLoc = "/home/rsehgal/myAmbar/February2022/muonEnergyCalib";
+  //std::string peakPosFileLoc = "../datafiles";
   std::string fullPathPeakPosFile=peakPosFileLoc+"/MuonPeak_"+ismran::GetBaseName(fileName);
   std::cout << RED << fullPathPeakPosFile << RESET << std::endl;
   //return 0;
