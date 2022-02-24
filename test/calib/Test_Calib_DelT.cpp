@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
   TH1F *qmean           = new TH1F(("Qmean_"+barName).c_str(), ("Qmean_"+barName).c_str(), 1000, 0, 32000);
   TH1F *qmeanCorr       = new TH1F(("QmeanCorr_"+barName).c_str(), ("QmeanCorr_"+barName).c_str(), 100, 0, 50);
   ismran::Analyzer_F an(argv[1]);
-  std::vector<ismran::ScintillatorBar_F *> vecOfScint = an.GetVectorOfScintillators();
+  std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
   for (unsigned int i = 0; i < vecOfScint.size(); i++) {
     if (vecOfScint[i]->GetBarIndex() == barIndex) {
       delT->Fill(vecOfScint[i]->GetDelT() / 1000.);
