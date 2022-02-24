@@ -20,5 +20,8 @@ extern std::vector<unsigned int> GetPeakPosVec(std::string filename);
 extern std::vector<unsigned int> GetPeakPosVec(std::string dirpath,std::string filename);
 extern unsigned int GetPeakPos(std::string filename, std::vector<std::string> vecofbarnames, std::string barName);
 
+extern unsigned int GetFoldedQNearQFar(unsigned int qnear, unsigned int qfar);
+extern unsigned int GetUnFoldedQNear(unsigned int qlong);
+extern unsigned int GetUnFoldedQFar(unsigned int qlong);
 }
 #endif

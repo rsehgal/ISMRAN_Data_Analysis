@@ -12,7 +12,7 @@
 #include <experimental/filesystem>
 #include "colors.h"
 #include "MuonPeakAnalyzer.h"
-
+#define USHRT_MAX 65535
 using std::cin;
 using std::cout;
 using std::endl;
@@ -26,7 +26,7 @@ std::string GetBaseName(std::string const &path)
   return path.substr(path.find_last_of("/\\") + 1);
 }
 
-//bool CompareTimestampScintillator(ScintillatorBar_F *i1, ScintillatorBar_F *i2)
+// bool CompareTimestampScintillator(ScintillatorBar_F *i1, ScintillatorBar_F *i2)
 bool CompareTimestampScintillator(std::shared_ptr<ScintillatorBar_F> i1, std::shared_ptr<ScintillatorBar_F> i2)
 {
   return (i1->GetTStampSmall() < i2->GetTStampSmall());
@@ -75,9 +75,9 @@ std::vector<unsigned int> GetPeakPosVec(std::string filename)
   fp->Close();
   return peakAnalyzer->GetVectorOfPeakPositions();
 }
-std::vector<unsigned int> GetPeakPosVec(std::string dirpath,std::string filename)
+std::vector<unsigned int> GetPeakPosVec(std::string dirpath, std::string filename)
 {
-  TFile *fp                              = new TFile((dirpath+"/MuonPeak_" + filename).c_str(), "r");
+  TFile *fp                              = new TFile((dirpath + "/MuonPeak_" + filename).c_str(), "r");
   TTree *MuonPeakPositionsTree           = (TTree *)fp->Get("MuonPeakPositionsTree");
   ismran::MuonPeakAnalyzer *peakAnalyzer = new ismran::MuonPeakAnalyzer;
   MuonPeakPositionsTree->SetBranchAddress("PeakPositions", &peakAnalyzer);
@@ -97,7 +97,21 @@ unsigned int GetPeakPos(std::string filename, std::vector<std::string> vecofbarn
     peakPos                              = peakPosVec[index]; // vecOfPeakPos[index];
   }
   return peakPos;
-} 
+}
 
+unsigned int GetFoldedQNearQFar(unsigned int qnear, unsigned int qfar)
+{
+  return ((qnear << 16) | qfar);
+}
 
+unsigned int GetUnFoldedQNear(unsigned int qlong)
+{
+  return (qlong >> 16);
+}
+unsigned int GetUnFoldedQFar(unsigned int qlong)
+{
+  unsigned short int maxU_16bits = USHRT_MAX;
+  UInt_t maskingVal              = maxU_16bits;
+  return (qlong & maskingVal);
+}
 } // namespace ismran
