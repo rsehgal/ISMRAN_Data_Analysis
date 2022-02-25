@@ -68,6 +68,15 @@ endif(VERBOSE)
 find_package(ROOT REQUIRED)
 include_directories(${ROOT_INCLUDE_DIR})
 
+find_package(MYSQL REQUIRED)
+include_directories(${MYSQL_INCLUDE_DIR})
+message(STATUS "mysql inc : ${MYSQL_INCLUDE_DIR}")
+
+
+find_package(Dqm REQUIRED)
+message(STATUS ${Dqm_INCLUDE_DIR})
+include_directories(${Dqm_INCLUDE_DIR})
+
 #file(GLOB MAC_FILES ${PROJECT_SOURCE_DIR}/MacFiles/*)
 #message(STATUS ${MAC_FILES})
 ##file(COPY ${MAC_FILES} DESTINATION ${PROJECT_SOURCE_DIR}/build)
@@ -98,6 +107,7 @@ SET(TESTSDIR ${TESTSDIR}
 ${CMAKE_SOURCE_DIR}/test
 ${CMAKE_SOURCE_DIR}/test/calib
 ${CMAKE_SOURCE_DIR}/test/core
+${CMAKE_SOURCE_DIR}/test/toSchedule
 )
 
 #COLLECTING ALL TEST FILES
@@ -111,7 +121,8 @@ macro(build_executables EXECUTABLES)
   foreach(EXECUTABLE ${EXECUTABLES})
     get_filename_component(TARGET_NAME ${EXECUTABLE} NAME_WE)
     add_executable(${TARGET_NAME} ${EXECUTABLE} ${headers} ${sources})
-    target_link_libraries(${TARGET_NAME} ${ROOT_LIBRARIES} Analysis Spectrum stdc++fs)
+    target_link_libraries(${TARGET_NAME} ${ROOT_LIBRARIES} Analysis Spectrum stdc++fs ${Dqm_LIBRARIES})
+    #target_link_libraries(${TARGET_NAME} ${ROOT_LIBRARIES} Analysis Spectrum stdc++fs)
  endforeach()
 endmacro()
 

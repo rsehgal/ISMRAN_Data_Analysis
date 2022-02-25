@@ -75,7 +75,7 @@ std::vector<unsigned int> vecOfPeakPos = {
 */
 
 //H9
-std::vector<std::string> vecOfPsBars = {
+/*std::vector<std::string> vecOfPsBars = {
     "PS01_S2AB1017", "PS02_S2AB1005", "PS03_S3AA1783", "PS04_S2AB1007", "PS05_S2AB1006", "PS06_S2AB1013",
     "PS07_S3AA1786", "PS08_S3AA1784", "PS09_S2AB1016", "PS10_S2AB1012", "PS11_S2AB1015", "PS12_S2AB1004",
     "PS13_S2AB1010", "PS14_S2AB1014", "PS15_S2AB1011", "PS16_S2AB1009", "PS17_S1AA6527", "PS18_S1AA6526",
@@ -92,7 +92,7 @@ std::vector<std::string> vecOfPsBars = {
     "PS79_SF883",    "PS80_SF877",    "PS81_SF879",    "PS82_SF885",    "PS83_SF890",    "PS84_SF882",
     "PS85_SF881",    "PS86_SF884",    "PS87_SF876",    "PS88_SF880",    "PS89_SF873",    "PS90_SF875",
     "PS_91","PS_92","PS_93","PS_94","PS_95","PS_96"};
-/*
+*/
 //Dhruva
   std::vector<std::string> vecOfPsBars = {
     "PS51_S1AA6644", "PS52_S1AA6515", "PS53_S1AA6713", "PS54_S1AA6645", "PS55_S1AA6646", "PS56_S1AA6647",
@@ -111,7 +111,7 @@ std::vector<std::string> vecOfPsBars = {
     "PS27_S2AB0709", "PS28_S3AA1788", "PS71_SF874",    "PS73_SF878",    "PS11_S2AB1015", "PS12_S2AB1004",
     "PS21_S2AB0716", "PS22_S2AB1008", "PS23_S1AA6518", "PS24_S1AA6516", "PS25_S2AB0717", "PS26_S2AB0712",
     "PS91","PS92","PS93","PS94","PS95","PS96"};
-*/
+
 unsigned int GetIndexFromBarName(std::string barName)
 {
   auto it            = find(vecOfBarsNamess.begin(), vecOfBarsNamess.end(), barName);
