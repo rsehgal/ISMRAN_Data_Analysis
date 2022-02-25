@@ -88,7 +88,7 @@ unsigned int MuonPeakAnalyzer::FindMuonPeakPos(TH1F *hist)
   hist->GetXaxis()->SetRangeUser(2000, 25000);
   // npeaks = TMath::Abs(npeaks);
   TSpectrum *s = new TSpectrum(2 * npeaks);
-  Int_t nfound = s->Search(hist, 2, "", 0.40);
+  Int_t nfound = s->Search(hist, 2, "", 0.60);
   if (nfound > 1) {
     std::cout << RED << hist->GetName() << " : Found : " << nfound << " Peaks" << RESET << std::endl;
   }
