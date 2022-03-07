@@ -20,7 +20,7 @@ int main()
   std::vector<std::vector<std::string>> vecOfVecOfUncheckedFiles = d.GetVectorOfFiles_ForSinglePointCalibration();
 
   for (unsigned int i = 0; i < vecOfVecOfUncheckedFiles[0].size(); i++) {
-    // if (i == 1) break;
+    //if (i == 1) break;
     std::string fullName = ismran::GetAmbarMountPoint_ParentDir() +
                            ismran::GetPath_StartingFromMountPoint(vecOfVecOfUncheckedFiles[0][i]) + "/" +
                            vecOfVecOfUncheckedFiles[1][i];
@@ -30,6 +30,7 @@ int main()
 
     std::string query =
         "update ismran_files set singlePointCalib=1 where fileName='" + vecOfVecOfUncheckedFiles[1][i] + "'";
+    //std::cout << BLUE << "Query : " << query << RESET << std::endl;
     d.Update(query);
   }
 
