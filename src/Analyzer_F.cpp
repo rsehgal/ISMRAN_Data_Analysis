@@ -7,6 +7,7 @@
 #include "Analyzer_F.h"
 #include "ScintillatorBar_F.h"
 #include "Helpers.h"
+#include "Helpers_Dqm.h"
 #include "SingleMuonTrack.h"
 namespace ismran {
 
@@ -92,7 +93,9 @@ std::vector<SingleMuonTrack *> Analyzer_F::ReconstructMuonTrack()
   std::vector<SingleMuonTrack *> smtVec;
   // std::vector<std::shared_ptr<SingleMuonTrack>> smtVec;
 
-  TFile *tracksFile = new TFile("MuonTracks.root", "RECREATE");
+  std::string outfileName="/home/rsehgal/myAmbar/MuonTracks/Muon_Tracks_"+ismran::GetFileNameWithoutExtension(GetBaseName(fDatafileName))+".root";
+  //TFile *tracksFile = new TFile("MuonTracks.root", "RECREATE");
+  TFile *tracksFile = new TFile(outfileName.c_str(), "RECREATE");
   tracksFile->cd();
   TTree *tracksTree = new TTree("TracksTree", "TracksTree");
   // tracksTree->SetDirectory(0);

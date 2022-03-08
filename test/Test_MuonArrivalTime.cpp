@@ -15,10 +15,10 @@
 #include "Helpers.h"
 #include <TApplication.h>
 #include "HardwareNomenclature.h"
-int main()
+int main(int argc, char *argv[])
 {
   TApplication *fApp                            = new TApplication("Test", NULL, NULL);
-  std::vector<ismran::SingleMuonTrack *> smtVec = ismran::GetMuonTracksVector("MuonTracks.root");
+  std::vector<ismran::SingleMuonTrack *> smtVec = ismran::GetMuonTracksVector(argv[1]);
 
   ULong64_t startTime = 0;
   ULong64_t endTime   = 0;
