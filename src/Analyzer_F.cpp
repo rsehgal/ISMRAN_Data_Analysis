@@ -93,7 +93,8 @@ std::vector<SingleMuonTrack *> Analyzer_F::ReconstructMuonTrack()
   std::vector<SingleMuonTrack *> smtVec;
   // std::vector<std::shared_ptr<SingleMuonTrack>> smtVec;
 
-  std::string outfileName="/home/rsehgal/myAmbar/MuonTracks/Muon_Tracks_"+ismran::GetFileNameWithoutExtension(GetBaseName(fDatafileName))+".root";
+  //std::string outfileName="/home/rsehgal/myAmbar/MuonTracks/Muon_Tracks_"+ismran::GetFileNameWithoutExtension(GetBaseName(fDatafileName))+".root";
+  std::string outfileName="/home/rsehgal/MuonTracks/Muon_Tracks_"+ismran::GetFileNameWithoutExtension(GetBaseName(fDatafileName))+".root";
   //TFile *tracksFile = new TFile("MuonTracks.root", "RECREATE");
   TFile *tracksFile = new TFile(outfileName.c_str(), "RECREATE");
   tracksFile->cd();
