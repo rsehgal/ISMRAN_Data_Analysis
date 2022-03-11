@@ -32,7 +32,8 @@ public:
   //std::vector<std::shared_ptr<SingleMuonTrack>> ReconstructMuonTrack();
   //std::vector<SingleMuonTrack *> ReconstructMuonTrack();
   unsigned int GetFileTime()const;
-  std::vector<unsigned int> GetPeakPosVec(std::string peakPosFileLoc="/home/rsehgal/myAmbar/MuonSinglePointCalibration");
+  //std::vector<unsigned int> GetPeakPosVec(std::string peakPosFileLoc="/home/rsehgal/myAmbar/MuonSinglePointCalibration");
+  std::vector<unsigned int> GetPeakPosVec(std::string peakPosFileLoc=".");
 
 public:
   /*
