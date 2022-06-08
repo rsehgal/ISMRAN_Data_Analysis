@@ -14,14 +14,30 @@
 int main(int argc, char *argv[])
 {
   TApplication *fApp = new TApplication("TEST", NULL, NULL);
-  TFile *fp          = new TFile("Combined.root", "r");
+  TFile *fp          = new TFile(argv[1], "r");
+  // TFile *fp          = new TFile("Combined.root", "r");
 
   for (unsigned int i = 0; i < ismran::vecOfPsBars.size(); i++) {
-    std::string histname = ismran::vecOfPsBars[i] + "_QMeanCorrected";
-    if (i == 0)
-      ((TH1F *)fp->Get(histname.c_str()))->Draw();
+    if (ismran::vecOfPsBars[i] == "PS63_S3AA1778" || ismran::vecOfPsBars[i] == "PS66_S1AA6639" ||
+        ismran::vecOfPsBars[i] == "PS68_S3AA1780" || ismran::vecOfPsBars[i] == "PS20_S2AB0718" ||
+        ismran::vecOfPsBars[i] == "PS65_S3AA1782" || ismran::vecOfPsBars[i] == "PS70_S3AA1785" ||
+        ismran::vecOfPsBars[i] == "PS44_S1AA6524" || ismran::vecOfPsBars[i] == "PS03_S3AA1783" ||
+        ismran::vecOfPsBars[i] == "PS17_S1AA6527" || ismran::vecOfPsBars[i] == "PS71_SF874") {
+      std::string histname = ismran::vecOfPsBars[i] + "_QMeanCorrected";
+      // std::string histname = ismran::vecOfPsBars[i] + "_QMean";
+      TH1F *hist = ((TH1F *)fp->Get(histname.c_str()));
+      // hist->Scale(1. / hist->Integral());
+      // hist->SetLineColor(i + 1);
+      // hist->Rebin(4);
+      if (i == 0) hist->Draw();
+      //((TH1F *)fp->Get(histname.c_str()))->Draw();
+      else
+        hist->Draw("same");
+      //((TH1F *)fp->Get(histname.c_str()))->Draw("same");
+    }
+
     else
-      ((TH1F *)fp->Get(histname.c_str()))->Draw("same");
+      continue;
   }
   fApp->Run();
 }

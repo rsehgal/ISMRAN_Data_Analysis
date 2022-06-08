@@ -26,6 +26,76 @@ unsigned int Analyzer_F::GetFileTime() const
 {
   return fFileTime;
 }
+#ifndef FOLDED_DATA
+void Analyzer_F::LoadData(unsigned int numOfEvents)
+{
+  TFile *fp = new TFile(fDatafileName.c_str(), "r");
+  UShort_t fBrCh_prev;
+  ULong64_t fTstamp_prev;
+  UInt_t fTime_prev;
+  UInt_t fQlong_prev;
+
+  UShort_t fBrCh;
+  ULong64_t fTstamp;
+  UInt_t fTime;
+  UInt_t fQlong;
+  Int_t fDelt;
+
+  TTree *tr = (TTree *)fp->Get("ftree");
+
+  tr->SetBranchAddress("fBrCh", &fBrCh);
+  tr->SetBranchAddress("fQlong", &fQlong);
+  tr->SetBranchAddress("fTstamp", &fTstamp);
+  tr->SetBranchAddress("fTime", &fTime);
+  //  tr->SetBranchAddress("fDelt", &fDelt);
+
+  TTimeStamp *times = new TTimeStamp();
+  Long64_t nEntries = tr->GetEntries();
+  if (numOfEvents > 0) nEntries = numOfEvents;
+  std::cout << "Total number of Entries : " << nEntries << std::endl;
+  Long64_t nb = 0;
+
+  /* Injecting shots mechanism */
+  unsigned long int numOfEventsInOneShot = nEntries / numOfShots;
+  Long64_t startEvNo                     = (shotNo - 1) * numOfEventsInOneShot;
+  Long64_t endEvNo                       = shotNo * numOfEventsInOneShot;
+
+  bool newPair = true;
+  // for (Long64_t iev = 0; iev < nEntries; iev++) {
+  for (Long64_t iev = startEvNo; iev < endEvNo; iev++) {
+    if (!(iev % 1000000)) std::cout << "Processed : " << iev << " events........." << std::endl;
+    // std::cout << "inside event loop......." << std::endl;
+    nb += tr->GetEntry(iev);
+    if ((iev == startEvNo) || newPair) {
+      fBrCh_prev   = fBrCh;
+      fTstamp_prev = fTstamp;
+      fTime_prev   = fTime;
+      fQlong_prev  = fQlong;
+      newPair      = false;
+    } else {
+      UShort_t smallBrCh = (fBrCh_prev < fBrCh) ? fBrCh_prev : fBrCh;
+      bool pairCond      = (!(smallBrCh % 2)) && (std::fabs(fTstamp_prev - fTstamp) < 25000);
+      if (pairCond) {
+        //std::cout << "PAIR condition found............." << std::endl;
+        if ((fBrCh - fBrCh_prev) == 1) {
+          fVecOfScint_F.push_back(std::shared_ptr<ScintillatorBar_F>(
+              new ScintillatorBar_F(fBrCh, fQlong_prev, fQlong, fTstamp, fTime, fDelt)));
+        } else {
+          fVecOfScint_F.push_back(std::shared_ptr<ScintillatorBar_F>(
+              new ScintillatorBar_F(fBrCh, fQlong, fQlong_prev, fTstamp, fTime, fDelt)));
+        }
+        newPair = true;
+      } else {
+        fBrCh_prev   = fBrCh;
+        fTstamp_prev = fTstamp;
+        fTime_prev   = fTime;
+        fQlong_prev  = fQlong;
+      }
+    }
+  }
+  fp->Close();
+}
+#else
 /*Function to load the data and in the vector of Scintillator_F*/
 void Analyzer_F::LoadData(unsigned int numOfEvents)
 {
@@ -79,7 +149,7 @@ void Analyzer_F::LoadData(unsigned int numOfEvents)
 
   fp->Close();
 }
-
+#endif
 // std::vector<std::shared_ptr<SingleMuonTrack>> Analyzer_F::ReconstructMuonTrack()
 std::vector<SingleMuonTrack *> Analyzer_F::ReconstructMuonTrack()
 {
@@ -93,9 +163,11 @@ std::vector<SingleMuonTrack *> Analyzer_F::ReconstructMuonTrack()
   std::vector<SingleMuonTrack *> smtVec;
   // std::vector<std::shared_ptr<SingleMuonTrack>> smtVec;
 
-  //std::string outfileName="/home/rsehgal/myAmbar/MuonTracks/Muon_Tracks_"+ismran::GetFileNameWithoutExtension(GetBaseName(fDatafileName))+".root";
-  std::string outfileName="/home/rsehgal/MuonTracks/Muon_Tracks_"+ismran::GetFileNameWithoutExtension(GetBaseName(fDatafileName))+".root";
-  //TFile *tracksFile = new TFile("MuonTracks.root", "RECREATE");
+  // std::string
+  // outfileName="/home/rsehgal/myAmbar/MuonTracks/Muon_Tracks_"+ismran::GetFileNameWithoutExtension(GetBaseName(fDatafileName))+".root";
+  std::string outfileName = "/home/rsehgal/MuonTracks/Muon_Tracks_" +
+                            ismran::GetFileNameWithoutExtension(GetBaseName(fDatafileName)) + ".root";
+  // TFile *tracksFile = new TFile("MuonTracks.root", "RECREATE");
   TFile *tracksFile = new TFile(outfileName.c_str(), "RECREATE");
   tracksFile->cd();
   TTree *tracksTree = new TTree("TracksTree", "TracksTree");

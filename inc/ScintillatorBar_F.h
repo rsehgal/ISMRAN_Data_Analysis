@@ -30,13 +30,17 @@ private:
   UInt_t fTime;      // Wall clock time
   Int_t fDelt;       // Time diff between left and right PMT
 
+  /*Only for H9 data*/
+  UInt_t fQnear;
+  UInt_t fQfar;
+
 public:
   ScintillatorBar_F();
   ScintillatorBar_F(unsigned int bIndex);
   // Required copy constructor
   ScintillatorBar_F(const ScintillatorBar_F &sbar);
   ScintillatorBar_F(ushort barIndex, UInt_t qlong, ULong64_t tstamp, UInt_t wtime, Int_t deltstamp);
-
+  ScintillatorBar_F(ushort barIndex, UInt_t qnear, UInt_t qfar, ULong64_t tstamp, UInt_t wtime, Int_t deltstamp);
   // Functions to get the Hit Position
   /*ismran::Point3D *EstimateHitPosition();
   ismran::Point3D *EstimateHitPosition_Param();
@@ -55,22 +59,22 @@ public:
   UInt_t GetQNear();
   UInt_t GetQFar();
   Double_t GetQMean();
-  //Function to get the corrected QMean
+  // Function to get the corrected QMean
   Double_t GetQMeanCorrected();
   Double_t GetQMeanCorrected(unsigned int muonPeakPos);
 
-  //Timing related function
+  // Timing related function
   Long_t GetDelT() const;
-  //Function to get the corrected delT
+  // Function to get the corrected delT
   Long_t GetDelTCorrected();
-  //Function to get the delT offset
+  // Function to get the delT offset
   double GetOffsetCorrection();
   Long_t GetTStampNear() const;
   Long_t GetTStampFar();
   Long_t GetTStampSmall();
 
-  //Function to get the parameterization
-  TF1* GetZParameterization();
+  // Function to get the parameterization
+  TF1 *GetZParameterization();
 
   // double GetLogQNearByQFar() { return log((1. * GetQLongFar()) / (1. * GetQLongNear())); }
 

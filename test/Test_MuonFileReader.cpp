@@ -13,10 +13,11 @@
 #include <TFile.h>
 #include "PsBar.h"
 #include "Helpers.h"
-int main()
+int main(int argc, char *argv[])
 {
 
-  std::vector<ismran::SingleMuonTrack *> smtVec = ismran::GetMuonTracksVector("MuonTracks.root");
+  std::vector<ismran::SingleMuonTrack *> smtVec = ismran::GetMuonTracksVector(argv[1]);
+  //std::vector<ismran::SingleMuonTrack *> smtVec = ismran::GetMuonTracksVector("MuonTracks.root");
 
   for (unsigned int i = 0; i < smtVec.size(); i++) {
     smtVec[i]->Print();

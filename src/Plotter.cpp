@@ -34,7 +34,7 @@ void InitializeHistograms()
     vecOfQMeanHist.push_back(
         std::shared_ptr<TH1F>(new TH1F((name + "_QMean").c_str(), (name + "_QMean").c_str(), 1000, 0, 32000)));
     vecOfQMeanCorrectedHist.push_back(std::shared_ptr<TH1F>(
-        new TH1F((name + "_QMeanCorrected").c_str(), (name + "_QMeanCorrected").c_str(), 100, 0, 100)));
+        new TH1F((name + "_QMeanCorrected").c_str(), (name + "_QMeanCorrected").c_str(), 300, 0, 60)));
   }
 }
 

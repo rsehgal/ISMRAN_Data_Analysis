@@ -59,7 +59,7 @@ unsigned int MuonPeakAnalyzer::GetRunNumber() {}
 void MuonPeakAnalyzer::FillMuonPeakPosVector(unsigned int barIndex)
 {
   std::cout << RED << "Started the work of filling peak position vector ...." << RESET << std::endl;
-  ismran::Analyzer_F an(fFileName);
+  ismran::Analyzer_F an(fFileName,1000000);
   fFileTime = an.GetFileTime();
   std::cout << "FileTime : " << fFileTime << std::endl;
   std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();

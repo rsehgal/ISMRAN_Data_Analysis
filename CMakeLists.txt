@@ -25,6 +25,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/modules)
 #option(USE_FOR_SIMULATION "Use Analyzer for simulated data" OFF)
 #option(STAGGERED_GEOM "Use Scattered geometry configurtion" OFF)
 option(SINGLE_POINT_CALIBRATION "Use Single Point Muon Calibration" ON)
+option( VERTICAL_ARRANGEMENT "Use VERTICAL_ARRANGEMENT" ON)
+option( FOLDED_DATA "Use FOLDED_DATA" ON)
 option(VERBOSE "Switching it ON will a lot of debuggin info" OFF)
 #option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
 #option(FINGER_PATTERN_CONDITION "Flag to see the finger plot of layers" OFF)
@@ -35,6 +37,14 @@ endif(SINGLE_POINT_CALIBRATION)
 if(VERBOSE)
 add_definitions(-DVERBOSE)
 endif(VERBOSE)
+
+if(FOLDED_DATA)
+add_definitions(-DFOLDED_DATA)
+endif(FOLDED_DATA)
+
+if(VERTICAL_ARRANGEMENT)
+add_definitions(-DVERTICAL_ARRANGEMENT)
+endif(VERTICAL_ARRANGEMENT)
 
 #if(FINGER_PATTERN_CONDITION)
 #add_definitions(-DUSE_CRITICAL_COND)
@@ -107,7 +117,7 @@ SET(TESTSDIR ${TESTSDIR}
 ${CMAKE_SOURCE_DIR}/test
 ${CMAKE_SOURCE_DIR}/test/calib
 ${CMAKE_SOURCE_DIR}/test/core
-${CMAKE_SOURCE_DIR}/test/toSchedule
+#${CMAKE_SOURCE_DIR}/test/toSchedule
 )
 
 #COLLECTING ALL TEST FILES
