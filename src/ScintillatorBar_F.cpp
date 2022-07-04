@@ -143,9 +143,15 @@ Long_t ScintillatorBar_F::GetDelTCorrected()
 
 double ScintillatorBar_F::GetOffsetCorrection()
 {
-  std::string barName             = vecOfPsBars[fBarIndex];
-  unsigned int sequentialBarIndex = GetIndexFromBarName(barName);
+  /*std::string barName             = vecOfPsBars[fBarIndex];
+  //unsigned int sequentialBarIndex = GetIndexFromBarName(barName);
+  unsigned int sequentialBarIndex = GetIndexFromBarName(sequentialBarNames,barName);
+  std::cout << RED << "BARName : " << barName << std::endl;
+  std::cout << RED << "Sequential Bar Index : " << sequentialBarIndex << RESET << std::endl;
   return Calibration::instance()->GetCalibrationDataOf(sequentialBarIndex)->GetDelTOffset() * 1000;
+  */
+  
+  return Calibration::instance()->GetCalibrationDataOf(fBarIndex)->GetDelTOffset() * 1000;
   // return 0;
 }
 

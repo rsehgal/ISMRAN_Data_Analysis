@@ -18,13 +18,15 @@ int main(int argc, char *argv[])
   ismran::Calibration *calib = ismran::Calibration::instance("completeCalib2.root");
   TCanvas *can               = new TCanvas("DelT", "DelT");
   can->Divide(2, 2);
-  unsigned int barIndex = 9;
+  unsigned int barIndex = 16;
   std::string barName = ismran::vecOfPsBars[barIndex];
   TH1F *delT            = new TH1F(("DelT_"+barName).c_str(), ("DelT_"+barName).c_str(), 100, -25, 25);
   TH1F *delTCorr        = new TH1F(("DelTCorr_"+barName).c_str(), ("DelTCorr_"+barName).c_str(), 100, -25, 25);
   TH1F *qmean           = new TH1F(("Qmean_"+barName).c_str(), ("Qmean_"+barName).c_str(), 1000, 0, 32000);
   TH1F *qmeanCorr       = new TH1F(("QmeanCorr_"+barName).c_str(), ("QmeanCorr_"+barName).c_str(), 100, 0, 50);
+  //ismran::Analyzer_F an(argv[1],1000000);
   ismran::Analyzer_F an(argv[1]);
+  ismran::vecOfPeakPos = an.GetPeakPosVec();
   std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
   for (unsigned int i = 0; i < vecOfScint.size(); i++) {
     if (vecOfScint[i]->GetBarIndex() == barIndex) {
@@ -35,10 +37,14 @@ int main(int argc, char *argv[])
     }
   }
 
+  TLegend leg;
+  leg.AddEntry(delT,"Before DelT correction");
+  leg.AddEntry(delTCorr,"After DelT correction");
   can->cd(1);
   delT->Draw();
   delTCorr->SetLineColor(2);
   delTCorr->Draw("same");
+  leg.Draw("same");
 
   can->cd(2);
   qmean->Draw();
