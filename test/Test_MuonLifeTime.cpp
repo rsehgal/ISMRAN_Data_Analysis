@@ -13,11 +13,14 @@
 #include <TH1F.h>
 #include <TApplication.h>
 #include "Helpers.h"
+#include "HardwareNomenclature.h"
 int main(int argc, char *argv[])
 {
   TApplication *fApp       = new TApplication("TEST", NULL, NULL);
   unsigned int numOfEvents = std::atoi(argv[2]);
   ismran::Analyzer_F an(argv[1], numOfEvents);
+  ismran::vecOfPeakPos = an.GetPeakPosVec();
+
   TFile *fp = new TFile(("MuonLifeTime_" + ismran::GetBaseName(argv[1])).c_str(), "RECREATE");
   std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
   // std::vector<std::shared_ptr<ismran::SingleMuonTrack>> smtVec       = an.ReconstructMuonTrack();
@@ -31,7 +34,8 @@ int main(int argc, char *argv[])
 
   TH1F *hist = new TH1F("MuonLifeTime", "MuonLifetime", 150, 0, 15.);
   for (unsigned int i = 0; i < vecOfScint.size(); i++) {
-    double qmeanCorr = vecOfScint[i]->GetQMeanCorrected(vecOfPeakPos[vecOfScint[i]->GetBarIndex()]);
+    //double qmeanCorr = vecOfScint[i]->GetQMeanCorrected(vecOfPeakPos[vecOfScint[i]->GetBarIndex()]);
+    double qmeanCorr = vecOfScint[i]->GetQMeanCorrected();//vecOfPeakPos[vecOfScint[i]->GetBarIndex()]);
 
     // For muon start signal
     if ((qmeanCorr > 10) && (qmeanCorr < 25) && (vecOfScint[i]->GetLayerIndex() == 9)) {
