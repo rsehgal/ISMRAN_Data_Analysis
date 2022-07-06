@@ -21,9 +21,11 @@ class PairFinder {
 public:
   PairFinder();
   PairFinder(std::string datafilename);
+  void FindPair();
   void LoadDataAndSort();
   void CheckPairs();
   void ValidatePairs();
+  bool ValidatePair(TreeEntry *near, TreeEntry *far);
   std::vector<TreeEntry *> GetVectorOfPairedTreeEntries() const;
   virtual ~PairFinder();
 

@@ -10,6 +10,7 @@
 #include <string>
 #include <iostream>
 #include <memory>
+#include "PairFinder.h"
 namespace ismran {
 
 class ScintillatorBar_F;
@@ -21,6 +22,7 @@ private:
   std::string fDatafileName;
   std::vector<std::shared_ptr<ScintillatorBar_F>> fVecOfScint_F;
   unsigned int fFileTime;
+  PairFinder pf;
 
 public:
   Analyzer_F();

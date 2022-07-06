@@ -18,13 +18,13 @@ int main(int argc, char *argv[])
   ismran::Calibration *calib = ismran::Calibration::instance("completeCalib2.root");
   TCanvas *can               = new TCanvas("DelT", "DelT");
   can->Divide(2, 2);
-  unsigned int barIndex = 16;
+  unsigned int barIndex = 6;
   std::string barName = ismran::vecOfPsBars[barIndex];
   TH1F *delT            = new TH1F(("DelT_"+barName).c_str(), ("DelT_"+barName).c_str(), 100, -25, 25);
   TH1F *delTCorr        = new TH1F(("DelTCorr_"+barName).c_str(), ("DelTCorr_"+barName).c_str(), 100, -25, 25);
   TH1F *qmean           = new TH1F(("Qmean_"+barName).c_str(), ("Qmean_"+barName).c_str(), 1000, 0, 32000);
   TH1F *qmeanCorr       = new TH1F(("QmeanCorr_"+barName).c_str(), ("QmeanCorr_"+barName).c_str(), 100, 0, 50);
-  //ismran::Analyzer_F an(argv[1],1000000);
+  //ismran::Analyzer_F an(argv[1],10000000);
   ismran::Analyzer_F an(argv[1]);
   ismran::vecOfPeakPos = an.GetPeakPosVec();
   std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
@@ -53,7 +53,8 @@ int main(int argc, char *argv[])
 
   TH1F *delT_muon                               = new TH1F(("DelT_muon_"+barName).c_str(), ("DelT_muon_"+barName).c_str(), 100, -25, 25);
   TH1F *delTCorr_muon                           = new TH1F(("DelTCorr_muon_"+barName).c_str(), ("DelTCorr_muon_"+barName).c_str(), 100, -25, 25);
-  std::vector<ismran::SingleMuonTrack *> smtVec = an.ReconstructMuonTrack();
+
+ /* std::vector<ismran::SingleMuonTrack *> smtVec = an.ReconstructMuonTrack();
 
   for (unsigned int i = 0; i < smtVec.size(); i++) {
     std::vector<ismran::ScintillatorBar_F *> scintVec = smtVec[i]->GetMuonTrack();
@@ -64,7 +65,7 @@ int main(int argc, char *argv[])
       }
     }
   }
-
+*/
   can->cd(3);
   delT_muon->Draw();
   delTCorr_muon->SetLineColor(2);

@@ -9,6 +9,8 @@
 #include "Helpers.h"
 #include "Helpers_Dqm.h"
 #include "SingleMuonTrack.h"
+#include "PairFinder.h"
+#include "TreeEntry.h"
 namespace ismran {
 
 unsigned int Analyzer_F::numOfShots = 1;
@@ -62,6 +64,69 @@ void Analyzer_F::LoadData(unsigned int numOfEvents)
 
   bool newPair = true;
   // for (Long64_t iev = 0; iev < nEntries; iev++) {
+
+  TreeEntry *near = new TreeEntry;
+  TreeEntry *far  = new TreeEntry;
+bool pairFound  = true;
+  for (Long64_t iev = startEvNo; iev < endEvNo; iev++) {
+    if (!(iev % 1000000)) std::cout << "Processed : " << iev << " events........." << std::endl;
+	   if (pairFound) {
+      nb += tr->GetEntry(iev);
+      near->Set(fBrCh, fQlong, fTstamp, fTime);
+
+      nb += tr->GetEntry(iev);
+      far->Set(fBrCh, fQlong, fTstamp, fTime);
+    } else {
+      near->Set(far->brch, far->qlong, far->tstamp, far->time);
+      nb += tr->GetEntry(iev);
+      far->Set(fBrCh, fQlong, fTstamp, fTime);
+    }
+
+	pairFound = pf.ValidatePair(near, far);
+        if(pairFound){
+          fVecOfScint_F.push_back(std::shared_ptr<ScintillatorBar_F>(
+              new ScintillatorBar_F(near->brch, near->qlong, far->qlong, near->tstamp, near->time,near->tstamp-far->tstamp )));
+}
+
+  }
+  fp->Close();
+}
+
+/*void Analyzer_F::LoadData(unsigned int numOfEvents)
+{
+  TFile *fp = new TFile(fDatafileName.c_str(), "r");
+  UShort_t fBrCh_prev;
+  ULong64_t fTstamp_prev;
+  UInt_t fTime_prev;
+  UInt_t fQlong_prev;
+
+  UShort_t fBrCh;
+  ULong64_t fTstamp;
+  UInt_t fTime;
+  UInt_t fQlong;
+  Int_t fDelt;
+
+  TTree *tr = (TTree *)fp->Get("ftree");
+
+  tr->SetBranchAddress("fBrCh", &fBrCh);
+  tr->SetBranchAddress("fQlong", &fQlong);
+  tr->SetBranchAddress("fTstamp", &fTstamp);
+  tr->SetBranchAddress("fTime", &fTime);
+  //  tr->SetBranchAddress("fDelt", &fDelt);
+
+  TTimeStamp *times = new TTimeStamp();
+  Long64_t nEntries = tr->GetEntries();
+  if (numOfEvents > 0) nEntries = numOfEvents;
+  std::cout << "Total number of Entries : " << nEntries << std::endl;
+  Long64_t nb = 0;
+
+  // Injecting shots mechanism
+  unsigned long int numOfEventsInOneShot = nEntries / numOfShots;
+  Long64_t startEvNo                     = (shotNo - 1) * numOfEventsInOneShot;
+  Long64_t endEvNo                       = shotNo * numOfEventsInOneShot;
+
+  bool newPair = true;
+  // for (Long64_t iev = 0; iev < nEntries; iev++) {
   for (Long64_t iev = startEvNo; iev < endEvNo; iev++) {
     if (!(iev % 1000000)) std::cout << "Processed : " << iev << " events........." << std::endl;
     // std::cout << "inside event loop......." << std::endl;
@@ -94,7 +159,8 @@ void Analyzer_F::LoadData(unsigned int numOfEvents)
     }
   }
   fp->Close();
-}
+}*/
+
 #else
 /*Function to load the data and in the vector of Scintillator_F*/
 void Analyzer_F::LoadData(unsigned int numOfEvents)

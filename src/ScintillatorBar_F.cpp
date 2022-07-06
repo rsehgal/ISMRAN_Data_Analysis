@@ -211,6 +211,7 @@ Double_t ScintillatorBar_F::GetQMeanCorrected()
 #else
     // Using single point calibration, and using equation of straight line to get y correspoinding to a x
     //ener = (20. / (1. * GetPeakPos(vecOfBarsNamess[sequentialBarIndex]))) * GetQMean();
+    std::cout << RED << vecOfPeakPos[fBarIndex] << " : " << GetQMean() <<std::endl;
     ener = (20. / (1. * vecOfPeakPos[fBarIndex])) * GetQMean();
 #endif
     return ener;

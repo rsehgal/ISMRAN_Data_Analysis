@@ -84,7 +84,7 @@ void MuonPeakAnalyzer::FillMuonPeakPosVector(unsigned int barIndex)
 unsigned int MuonPeakAnalyzer::FindMuonPeakPos(TH1F *hist)
 {
   Int_t npeaks = 10;
-  hist->Rebin(8);
+  hist->Rebin(16);
   hist->GetXaxis()->SetRangeUser(2000, 25000);
   // npeaks = TMath::Abs(npeaks);
   TSpectrum *s = new TSpectrum(2 * npeaks);
@@ -95,12 +95,17 @@ unsigned int MuonPeakAnalyzer::FindMuonPeakPos(TH1F *hist)
   //  std::cout << "Found : " << nfound << " : candidate peaks to fit" << std::endl;
   Double_t *xpeaks;
   xpeaks = s->GetPositionX();
-  for (unsigned short p = 0; p < nfound; p++) {
+  double sum = 0;  
+for (unsigned short p = 0; p < nfound; p++) {
     Double_t xp = xpeaks[p];
-    // std::cout << "Peak Location : " << xp << std::endl;
+    std::cout << BLUE << hist->GetName() <<  " : Peak Location : " << xp << RESET <<  std::endl;
+    sum += xp;
   }
 
-  return (int)xpeaks[nfound - 1];
+  //return (int)xpeaks[nfound - 1];
+  sum /= nfound;
+  std::cout << MAGENTA <<  "FINAL RETURN VaLUE : " << sum << RESET << std::endl;
+  return sum;
 }
 
 unsigned int MuonPeakAnalyzer::GetFileTime() const

@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     if ((qmeanCorr > 3) && (qmeanCorr < 30)) {
       endTime       = vecOfScint[i]->GetTStampNear();
       Long64_t delT = endTime - startTime;
-      if (delT > 1000000 && delT < 25000000) {
+      if (delT > 1000000 && delT < 15000000) {
         // std::cout << GREEN << (delT/1e+6) << " us....." <<RESET << std::endl;
         hist->Fill(((1. * delT) / 1e+6));
       }
