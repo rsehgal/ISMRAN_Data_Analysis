@@ -53,7 +53,8 @@ void PairFinder::FindPair()
   tree->Branch("fDelt", &FDelt, "FDelt/I");
 
   TTimeStamp *times = new TTimeStamp();
-  Long64_t nEntries = tr->GetEntries();
+  //Long64_t nEntries = 1000000; // tr->GetEntries();
+  Long64_t nEntries =  tr->GetEntries();
   std::cout << "Total number of Entries : " << nEntries << std::endl;
 
   Long64_t nb = 0;
@@ -70,22 +71,28 @@ void PairFinder::FindPair()
   TreeEntry *near = new TreeEntry;
   TreeEntry *far  = new TreeEntry;
   bool pairFound  = true;
+
+  unsigned int rightPairs = 0, wrongPairs = 0;
   // for (Long64_t iev = 0; iev < nEntries; iev++) {
   // for (Long64_t iev = (shotNo - 1) * numOfEventsInOneShot; iev < shotNo * numOfEventsInOneShot; iev++) {
-  for (Long64_t iev = start ; iev < shotNo * numOfEventsInOneShot; iev++) {
+  // for (Long64_t iev = start ; iev < shotNo * numOfEventsInOneShot; iev++) {
+  for (Long64_t iev = start; iev < shotNo * numOfEventsInOneShot;) {
 
-  //for (Long64_t iev = (start + 1); iev < 10000000; iev++) {
-
+    // for (Long64_t iev = (start + 1); iev < 10000000; iev++) {
+    //    std::cout << RED << "Pair Found : " << pairFound << RESET << std::endl;
     if (pairFound) {
       nb += tr->GetEntry(iev);
       near->Set(brch, qlong, tstamp, time);
+      iev++;
 
       nb += tr->GetEntry(iev);
       far->Set(brch, qlong, tstamp, time);
+      iev++;
     } else {
       near->Set(far->brch, far->qlong, far->tstamp, far->time);
       nb += tr->GetEntry(iev);
       far->Set(brch, qlong, tstamp, time);
+      iev++;
     }
 
     //    nb += tr->GetEntry(iev);
@@ -99,7 +106,11 @@ void PairFinder::FindPair()
     }
 
     pairFound = ValidatePair(near, far);
-    //std::cout << BLUE << pairFound << std::endl;
+    if (pairFound)
+      rightPairs++;
+    else
+      wrongPairs++;
+    // std::cout << BLUE << pairFound << std::endl;
     if (pairFound) {
       FBrCh   = near->brch;
       FTstamp = near->tstamp;
@@ -107,8 +118,8 @@ void PairFinder::FindPair()
       FQlong  = ismran::GetFoldedQNearQFar(near->qlong, far->qlong);
       FDelt   = near->tstamp - far->tstamp;
       tree->Fill();
-      //std::cout << RED << FBrCh << ", " << FTstamp << ", " << FTime << ", " << FQlong << ", " << FDelt << RESET
-                //<< std::endl;
+      // std::cout << RED << FBrCh << ", " << FTstamp << ", " << FTime << ", " << FQlong << ", " << FDelt << RESET
+      //<< std::endl;
     }
 
   } //! event loop
@@ -119,6 +130,7 @@ void PairFinder::FindPair()
   fpT->Close();
 
   std::cout << "Size of TreeEntry vector : " << fVecOfTreeEntry.size() << std::endl;
+  std::cout << BLUE << "RightPairs : " << rightPairs << " : WrongPairs : " << wrongPairs << RESET << std::endl;
   return;
 }
 void PairFinder::LoadDataAndSort()
@@ -194,15 +206,38 @@ void PairFinder::CheckPairs()
 bool PairFinder::ValidatePair(TreeEntry *near, TreeEntry *far)
 {
 
+  //IdentifyNearFar(near, far);
   unsigned int smallChannelNum = (near->brch < far->brch) ? near->brch : far->brch;
   int diff                     = near->tstamp - far->tstamp;
-  if ((abs(near->brch - far->brch) != 1) || (abs(diff) > 25000) || (smallChannelNum % 2) || smallChannelNum==far->brch) {
+  if ((abs(near->brch - far->brch) != 1) || (abs(diff) > 25000) || (smallChannelNum % 2) ||
+      smallChannelNum == far->brch) {
+    std::cout << GREEN << "Invalid Pair Found...." << RESET << std::endl;
     return false;
   } else {
     return true;
   }
 }
 
+void PairFinder::IdentifyNearFar(TreeEntry *near, TreeEntry *far)
+{
+  if (near->brch > far->brch) {
+    std::cout << "================================================" << std::endl;
+    std::cout << RED;
+    near->Print();
+    far->Print();
+    std::cout << RESET;
+    TreeEntry *temp = new TreeEntry;
+    temp->Set(near->brch, near->qlong, near->tstamp, near->time);
+    near->Set(far->brch, far->qlong, far->tstamp, far->time);
+    far->Set(temp->brch, temp->qlong, temp->tstamp, temp->time);
+    std::cout << "-------------------------------------------------" << std::endl;
+    std::cout << BLUE;
+    near->Print();
+    far->Print();
+    std::cout << RESET;
+    delete temp;
+  }
+}
 void PairFinder::ValidatePairs()
 {
   std::string transFileName = ("Transformed_" + ismran::GetBaseName(fDatafileName));

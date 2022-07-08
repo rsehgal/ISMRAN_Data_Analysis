@@ -34,6 +34,11 @@ private:
   UInt_t fQnear;
   UInt_t fQfar;
 
+#ifdef DEB
+  ushort fBrCh;
+#endif
+
+
 public:
   ScintillatorBar_F();
   ScintillatorBar_F(unsigned int bIndex);
@@ -41,6 +46,7 @@ public:
   ScintillatorBar_F(const ScintillatorBar_F &sbar);
   ScintillatorBar_F(ushort barIndex, UInt_t qlong, ULong64_t tstamp, UInt_t wtime, Int_t deltstamp);
   ScintillatorBar_F(ushort barIndex, UInt_t qnear, UInt_t qfar, ULong64_t tstamp, UInt_t wtime, Int_t deltstamp);
+
   // Functions to get the Hit Position
   /*ismran::Point3D *EstimateHitPosition();
   ismran::Point3D *EstimateHitPosition_Param();

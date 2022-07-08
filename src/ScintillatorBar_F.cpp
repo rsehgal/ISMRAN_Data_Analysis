@@ -20,6 +20,9 @@ ScintillatorBar_F::ScintillatorBar_F()
   fDelt     = 0;
   fQnear    = 0;
   fQfar     = 0;
+#ifdef DEB
+  fBrCh = 0;
+#endif
 }
 
 ScintillatorBar_F::ScintillatorBar_F(unsigned int bIndex)
@@ -34,11 +37,17 @@ ScintillatorBar_F::ScintillatorBar_F(ushort barIndex, UInt_t qlong, ULong64_t ts
   UInt_t maskingVal              = maxU_16bits;
   fQfar                          = (fQlong & maskingVal);
   fQnear                         = (fQlong >> 16);
+#ifdef DEB
+  fBrCh = barIndex;
+#endif
 }
 ScintillatorBar_F::ScintillatorBar_F(ushort barIndex, UInt_t qnear, UInt_t qfar, ULong64_t tstamp, UInt_t wtime,
                                      Int_t deltstamp)
     : fBarIndex(barIndex / 2), fQnear(qnear), fQfar(qfar), fTstamp(tstamp), fTime(wtime), fDelt(deltstamp)
 {
+#ifdef DEB
+  fBrCh = barIndex;
+#endif
 }
 
 ScintillatorBar_F::ScintillatorBar_F(const ScintillatorBar_F &sbar)
@@ -55,8 +64,11 @@ ScintillatorBar_F::ScintillatorBar_F(const ScintillatorBar_F &sbar)
 void ScintillatorBar_F::Print()
 {
   std::cout << "-----------------------------------------------" << std::endl;
+#ifdef DEB
+  std::cout << "fBrCh : " << fBrCh << " : ";
+#endif
   std::cout << "BarIndex : " << fBarIndex << " : LayerIndex : " << GetLayerIndex()
-            << " : BAR Name : " << vecOfBarsNamess[fBarIndex] << " :  Energy :  " << GetQMean() // Corrected()
+            << " : BAR Name : " << vecOfPsBars[fBarIndex] << " :  Energy :  " << GetQMean() // Corrected()
             << " : DelT : " << GetDelT() << std::endl;
 }
 
@@ -150,7 +162,7 @@ double ScintillatorBar_F::GetOffsetCorrection()
   std::cout << RED << "Sequential Bar Index : " << sequentialBarIndex << RESET << std::endl;
   return Calibration::instance()->GetCalibrationDataOf(sequentialBarIndex)->GetDelTOffset() * 1000;
   */
-  
+
   return Calibration::instance()->GetCalibrationDataOf(fBarIndex)->GetDelTOffset() * 1000;
   // return 0;
 }
@@ -200,9 +212,9 @@ Double_t ScintillatorBar_F::GetQMeanCorrected(unsigned int muonPeakPos)
 Double_t ScintillatorBar_F::GetQMeanCorrected()
 {
   {
-    Double_t ener                   = 0.;
-    std::string barName             = vecOfPsBars[fBarIndex];
- //   unsigned int sequentialBarIndex = GetIndexFromBarName(barName);
+    Double_t ener       = 0.;
+    std::string barName = vecOfPsBars[fBarIndex];
+    //   unsigned int sequentialBarIndex = GetIndexFromBarName(barName);
 
 #ifndef SINGLE_POINT_CALIBRATION
     TF1 *enercalibFormula = Calibration::instance()->GetCalibrationDataOf(sequentialBarIndex)->GetEnergyCalibFormula();
@@ -210,8 +222,8 @@ Double_t ScintillatorBar_F::GetQMeanCorrected()
     // std::cout << "Predicted Energy : " << ener << std::endl;
 #else
     // Using single point calibration, and using equation of straight line to get y correspoinding to a x
-    //ener = (20. / (1. * GetPeakPos(vecOfBarsNamess[sequentialBarIndex]))) * GetQMean();
-    //std::cout << RED << vecOfPeakPos[fBarIndex] << " : " << GetQMean() <<std::endl;
+    // ener = (20. / (1. * GetPeakPos(vecOfBarsNamess[sequentialBarIndex]))) * GetQMean();
+    // std::cout << RED << vecOfPeakPos[fBarIndex] << " : " << GetQMean() <<std::endl;
     ener = (20. / (1. * vecOfPeakPos[fBarIndex])) * GetQMean();
 #endif
     return ener;

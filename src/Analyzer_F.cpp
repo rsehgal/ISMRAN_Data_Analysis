@@ -67,27 +67,29 @@ void Analyzer_F::LoadData(unsigned int numOfEvents)
 
   TreeEntry *near = new TreeEntry;
   TreeEntry *far  = new TreeEntry;
-bool pairFound  = true;
-  for (Long64_t iev = startEvNo; iev < endEvNo; iev++) {
+  bool pairFound  = true;
+  for (Long64_t iev = startEvNo; iev < endEvNo;) {
     if (!(iev % 1000000)) std::cout << "Processed : " << iev << " events........." << std::endl;
-	   if (pairFound) {
+    if (pairFound) {
       nb += tr->GetEntry(iev);
       near->Set(fBrCh, fQlong, fTstamp, fTime);
+      iev++;
 
       nb += tr->GetEntry(iev);
       far->Set(fBrCh, fQlong, fTstamp, fTime);
+      iev++;
     } else {
       near->Set(far->brch, far->qlong, far->tstamp, far->time);
       nb += tr->GetEntry(iev);
       far->Set(fBrCh, fQlong, fTstamp, fTime);
+      iev++;
     }
 
-	pairFound = pf.ValidatePair(near, far);
-        if(pairFound){
-          fVecOfScint_F.push_back(std::shared_ptr<ScintillatorBar_F>(
-              new ScintillatorBar_F(near->brch, near->qlong, far->qlong, near->tstamp, near->time,near->tstamp-far->tstamp )));
-}
-
+    pairFound = pf.ValidatePair(near, far);
+    if (pairFound) {
+      fVecOfScint_F.push_back(std::shared_ptr<ScintillatorBar_F>(new ScintillatorBar_F(
+          near->brch, near->qlong, far->qlong, near->tstamp, near->time, near->tstamp - far->tstamp)));
+    }
   }
   fp->Close();
 }
@@ -219,7 +221,7 @@ void Analyzer_F::LoadData(unsigned int numOfEvents)
 // std::vector<std::shared_ptr<SingleMuonTrack>> Analyzer_F::ReconstructMuonTrack()
 std::vector<SingleMuonTrack *> Analyzer_F::ReconstructMuonTrack()
 {
-  std::vector<unsigned int> vecOfPeakPos = GetPeakPosVec();
+  //std::vector<unsigned int> vecOfPeakPos = GetPeakPosVec();
   std::cout << "Going to Create Muon Tracks.................." << std::endl;
   std::sort(fVecOfScint_F.begin(), fVecOfScint_F.end(), CompareTimestampScintillator);
   unsigned int scintVecSize = fVecOfScint_F.size();
@@ -232,7 +234,7 @@ std::vector<SingleMuonTrack *> Analyzer_F::ReconstructMuonTrack()
   // std::string
   // outfileName="/home/rsehgal/myAmbar/MuonTracks/Muon_Tracks_"+ismran::GetFileNameWithoutExtension(GetBaseName(fDatafileName))+".root";
   std::string outfileName = //"/home/rsehgal/MuonTracks/Muon_Tracks_" +
-                            ismran::GetFileNameWithoutExtension(GetBaseName(fDatafileName)) + ".root";
+      "MuonTracks_"+ismran::GetFileNameWithoutExtension(GetBaseName(fDatafileName)) + ".root";
   // TFile *tracksFile = new TFile("MuonTracks.root", "RECREATE");
   TFile *tracksFile = new TFile(outfileName.c_str(), "RECREATE");
   tracksFile->cd();
@@ -242,7 +244,8 @@ std::vector<SingleMuonTrack *> Analyzer_F::ReconstructMuonTrack()
 
   ULong64_t tStart = fVecOfScint_F[0]->GetTStampSmall();
   for (unsigned int i = 1; i < scintVecSize; i++) {
-    if (fVecOfScint_F[i]->GetQMeanCorrected(vecOfPeakPos[fVecOfScint_F[i]->GetBarIndex()]) > qmeanCorrThreshold) {
+    //if (fVecOfScint_F[i]->GetQMeanCorrected(vecOfPeakPos[fVecOfScint_F[i]->GetBarIndex()]) > qmeanCorrThreshold) {
+    if (fVecOfScint_F[i]->GetQMeanCorrected() > qmeanCorrThreshold) {
       if (std::fabs(fVecOfScint_F[i]->GetTStampSmall() - tStart) < 20000) {
         // Within 20ns window
         singleMuonTrack->push_back(fVecOfScint_F[i].get());

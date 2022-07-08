@@ -22,6 +22,7 @@ public:
   PairFinder();
   PairFinder(std::string datafilename);
   void FindPair();
+  void IdentifyNearFar(TreeEntry *near, TreeEntry *far);
   void LoadDataAndSort();
   void CheckPairs();
   void ValidatePairs();

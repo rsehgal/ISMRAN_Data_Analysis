@@ -13,14 +13,20 @@
 #include <TFile.h>
 #include "PsBar.h"
 #include "Helpers.h"
+#include "colors.h"
 int main(int argc, char *argv[])
 {
 
   std::vector<ismran::SingleMuonTrack *> smtVec = ismran::GetMuonTracksVector(argv[1]);
-  //std::vector<ismran::SingleMuonTrack *> smtVec = ismran::GetMuonTracksVector("MuonTracks.root");
-
+  // std::vector<ismran::SingleMuonTrack *> smtVec = ismran::GetMuonTracksVector("MuonTracks.root");
+  unsigned int muonCounter = 0;
   for (unsigned int i = 0; i < smtVec.size(); i++) {
-    smtVec[i]->Print();
+    if ((smtVec[i]->size() > 4 ) && muonCounter < 5) {
+      muonCounter++;
+      std::cout << RED;
+      smtVec[i]->Print();
+      std::cout << RESET << std::endl;
+    }
   }
 
   /*=====================================================================
