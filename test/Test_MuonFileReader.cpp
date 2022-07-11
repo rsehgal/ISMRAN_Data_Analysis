@@ -20,11 +20,17 @@ int main(int argc, char *argv[])
 
   std::vector<ismran::SingleMuonTrack *> smtVec = ismran::GetMuonTracksVector(argv[1]);
   ismran::Analyzer_F an;
-  ismran::vecOfPeakPos = an.GetPeakPosVec_Direct("MuonPeak.root");
-  // std::vector<ismran::SingleMuonTrack *> smtVec = ismran::GetMuonTracksVector("MuonTracks.root");
+// ismran::vecOfPeakPos = an.GetPeakPosVec_Direct("MuonPeak.root");
+// std::vector<ismran::SingleMuonTrack *> smtVec = ismran::GetMuonTracksVector("MuonTracks.root");
+#ifdef USE_EXISTING_MUON_PEAK_FILE
+  ismran::vecOfPeakPos = ismran::GetPeakPosVec_Direct(".", "MuonPeak.root");
+#else
+  ismran::vecOfPeakPos = an.GetPeakPosVec();
+#endif
+
   unsigned int muonCounter = 0;
   for (unsigned int i = 0; i < smtVec.size(); i++) {
-    if ((smtVec[i]->size() > 4 ) && muonCounter < 5) {
+    if ((smtVec[i]->size() > 4) && muonCounter < 5) {
       muonCounter++;
       std::cout << RED;
       smtVec[i]->Print();

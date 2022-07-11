@@ -29,6 +29,12 @@ option( VERTICAL_ARRANGEMENT "Use VERTICAL_ARRANGEMENT" ON)
 option( FOLDED_DATA "Use FOLDED_DATA" ON)
 option(VERBOSE "Switching it ON will a lot of debuggin info" OFF)
 option(DEB "Use extra data member for debuggin" OFF)
+option(USE_EXISTING_MUON_PEAK_FILE "Use the existing muon peak file" ON)
+
+if(USE_EXISTING_MUON_PEAK_FILE)
+add_definitions(-DUSE_EXISTING_MUON_PEAK_FILE)
+endif(USE_EXISTING_MUON_PEAK_FILE)
+
 #option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
 #option(FINGER_PATTERN_CONDITION "Flag to see the finger plot of layers" OFF)
 if(SINGLE_POINT_CALIBRATION)

@@ -15,8 +15,11 @@ int main(int argc, char *argv[])
 {
   unsigned int numOfEvents = std::atoi(argv[2]);
   ismran::Analyzer_F an(argv[1], numOfEvents);
-  //ismran::vecOfPeakPos = an.GetPeakPosVec();
+#ifdef USE_EXISTING_MUON_PEAK_FILE
   ismran::vecOfPeakPos = ismran::GetPeakPosVec_Direct(".","MuonPeak.root");
+#else
+  ismran::vecOfPeakPos = an.GetPeakPosVec();
+#endif
   std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
   //std::vector<std::shared_ptr<ismran::SingleMuonTrack>> smtVec       = an.ReconstructMuonTrack();
   std::vector<ismran::SingleMuonTrack*> smtVec       = an.ReconstructMuonTrack();
