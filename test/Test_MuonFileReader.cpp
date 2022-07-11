@@ -14,10 +14,13 @@
 #include "PsBar.h"
 #include "Helpers.h"
 #include "colors.h"
+#include "HardwareNomenclature.h"
 int main(int argc, char *argv[])
 {
 
   std::vector<ismran::SingleMuonTrack *> smtVec = ismran::GetMuonTracksVector(argv[1]);
+  ismran::Analyzer_F an;
+  ismran::vecOfPeakPos = an.GetPeakPosVec_Direct("MuonPeak.root");
   // std::vector<ismran::SingleMuonTrack *> smtVec = ismran::GetMuonTracksVector("MuonTracks.root");
   unsigned int muonCounter = 0;
   for (unsigned int i = 0; i < smtVec.size(); i++) {

@@ -38,13 +38,17 @@ int main(int argc, char *argv[])
     double qmeanCorr = vecOfScint[i]->GetQMeanCorrected();//vecOfPeakPos[vecOfScint[i]->GetBarIndex()]);
 
     // For muon start signal
-    if ((qmeanCorr > 10) && (qmeanCorr < 25) && (vecOfScint[i]->GetLayerIndex() == 9)) {
-      startTime = vecOfScint[i]->GetTStampNear();
+    if ((qmeanCorr > 10) && (qmeanCorr < 25) 
+	&& (vecOfScint[i]->GetLayerIndex() == 9)
+	) {
+      //startTime = vecOfScint[i]->GetTStampNear();
+      startTime = vecOfScint[i]->GetTStampSmall();
     }
 
     // For electron delay signal
     if ((qmeanCorr > 3) && (qmeanCorr < 30)) {
-      endTime       = vecOfScint[i]->GetTStampNear();
+      //endTime       = vecOfScint[i]->GetTStampNear();
+      endTime       = vecOfScint[i]->GetTStampSmall();
       Long64_t delT = endTime - startTime;
       if (delT > 1000000 && delT < 15000000) {
         // std::cout << GREEN << (delT/1e+6) << " us....." <<RESET << std::endl;

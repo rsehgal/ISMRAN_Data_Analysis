@@ -10,11 +10,13 @@
 #include "Plotter.h"
 #include <TFile.h>
 #include "HardwareNomenclature.h"
+#include "Helpers.h"
 int main(int argc, char *argv[])
 {
   unsigned int numOfEvents = std::atoi(argv[2]);
   ismran::Analyzer_F an(argv[1], numOfEvents);
-  ismran::vecOfPeakPos = an.GetPeakPosVec();
+  //ismran::vecOfPeakPos = an.GetPeakPosVec();
+  ismran::vecOfPeakPos = ismran::GetPeakPosVec_Direct(".","MuonPeak.root");
   std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
   //std::vector<std::shared_ptr<ismran::SingleMuonTrack>> smtVec       = an.ReconstructMuonTrack();
   std::vector<ismran::SingleMuonTrack*> smtVec       = an.ReconstructMuonTrack();

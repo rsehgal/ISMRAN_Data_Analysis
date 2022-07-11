@@ -273,6 +273,10 @@ std::vector<unsigned int> Analyzer_F::GetPeakPosVec(std::string peakPosFileLoc)
 {
   return ismran::GetPeakPosVec(peakPosFileLoc, ismran::GetBaseName(fDatafileName));
 }
+std::vector<unsigned int> Analyzer_F::GetPeakPosVec_Direct(std::string peakPosFile)
+{
+  return ismran::GetPeakPosVec_Direct(".", peakPosFile);
+}
 
 std::vector<std::shared_ptr<ScintillatorBar_F>> Analyzer_F::GetVectorOfScintillators()
 {

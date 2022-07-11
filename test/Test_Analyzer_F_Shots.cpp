@@ -23,7 +23,13 @@ int main(int argc, char *argv[])
   //return 0;
   //std::vector<unsigned int> vecOfPeakPos = ismran::GetPeakPosVec(fullPathPeakPosFile);
    //std::vector<unsigned int> 
-   ismran::vecOfPeakPos = ismran::GetPeakPosVec(peakPosFileLoc,ismran::GetBaseName(fileName));
+   
+   //To use Peak Position file corresponding to the data, uncomment the line below
+   //and comment the next one
+   //ismran::vecOfPeakPos = ismran::GetPeakPosVec(peakPosFileLoc,ismran::GetBaseName(fileName));
+   
+   //To use an existing peak position file with name MuonPeak.root
+   ismran::vecOfPeakPos = ismran::GetPeakPosVec_Direct(".","MuonPeak.root");
   std::string outputFileName = argv[2];
   
   /* Accepting NumOfShots and ShotNo from the caller or a calling shell script*/
