@@ -20,13 +20,9 @@ endif()
 #
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/modules)
 
-#option(CRY "Enable CRY library for cosmic event generation" OFF)
-#option(USE_CALIBRATION "Use Calibration data for Sampling of time" OFF)
-#option(USE_FOR_SIMULATION "Use Analyzer for simulated data" OFF)
-#option(STAGGERED_GEOM "Use Scattered geometry configurtion" OFF)
 option(SINGLE_POINT_CALIBRATION "Use Single Point Muon Calibration" ON)
-option( VERTICAL_ARRANGEMENT "Use VERTICAL_ARRANGEMENT" ON)
-option( FOLDED_DATA "Use FOLDED_DATA" ON)
+option(VERTICAL_ARRANGEMENT "Use VERTICAL_ARRANGEMENT" ON)
+option(FOLDED_DATA "Use FOLDED_DATA" ON)
 option(VERBOSE "Switching it ON will a lot of debuggin info" OFF)
 option(DEB "Use extra data member for debuggin" OFF)
 option(USE_EXISTING_MUON_PEAK_FILE "Use the existing muon peak file" ON)
@@ -35,8 +31,6 @@ if(USE_EXISTING_MUON_PEAK_FILE)
 add_definitions(-DUSE_EXISTING_MUON_PEAK_FILE)
 endif(USE_EXISTING_MUON_PEAK_FILE)
 
-#option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
-#option(FINGER_PATTERN_CONDITION "Flag to see the finger plot of layers" OFF)
 if(SINGLE_POINT_CALIBRATION)
 add_definitions(-DSINGLE_POINT_CALIBRATION)
 endif(SINGLE_POINT_CALIBRATION)
@@ -57,34 +51,6 @@ if(VERTICAL_ARRANGEMENT)
 add_definitions(-DVERTICAL_ARRANGEMENT)
 endif(VERTICAL_ARRANGEMENT)
 
-#if(FINGER_PATTERN_CONDITION)
-#add_definitions(-DUSE_CRITICAL_COND)
-#endif(FINGER_PATTERN_CONDITION)
-#
-#if(WITH_GEANT4_UIVIS)
-#  find_package(Geant4 REQUIRED ui_all vis_all)
-#else()
-#  find_package(Geant4 REQUIRED)
-#endif()
-#
-#
-#
-#if(STAGGERED_GEOM)
-#add_definitions(-DSTAGGERED_GEOM)
-#endif(STAGGERED_GEOM)
-#
-#if(CRY)
-#add_definitions(-DUSE_CRY)
-#endif(CRY)
-#
-#if(USE_FOR_SIMULATION)
-#add_definitions(-DUSE_FOR_SIMULATION)
-#endif(USE_FOR_SIMULATION)
-#
-#if(USE_CALIBRATION)
-#add_definitions(-DUSE_CALIBRATION)
-#endif(USE_CALIBRATION)
-
 #----------------------------------------------------------------------------
 find_package(ROOT REQUIRED)
 include_directories(${ROOT_INCLUDE_DIR})
@@ -98,26 +64,7 @@ find_package(Dqm REQUIRED)
 message(STATUS ${Dqm_INCLUDE_DIR})
 include_directories(${Dqm_INCLUDE_DIR})
 
-#file(GLOB MAC_FILES ${PROJECT_SOURCE_DIR}/MacFiles/*)
-#message(STATUS ${MAC_FILES})
-##file(COPY ${MAC_FILES} DESTINATION ${PROJECT_SOURCE_DIR}/build)
-#file(COPY ${MAC_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-
-#find_package(Geant4 REQUIRED)
-#include(${Geant4_USE_FILE})
-#include_directories(../..)
-#include_directories(../inc)
-#include_directories(../../base)
-#include_directories(../analysis_V2/inc)
-#include_directories(../ml)
 include_directories(${PROJECT_SOURCE_DIR}/inc)
-
-#ROOT_GENERATE_DICTIONARY(G__Tomo ../inc/Point3D.h LINKDEF ../inc/DictLinkDef.h)
-#ROOT_GENERATE_DICTIONARY(G__Tomo ../analysis_V2/inc/Point3D.h ../analysis_V2/inc/ScintillatorBar_V2.h ../analysis_V2/inc/SingleMuonTrack.h LINKDEF ../analysis_V2/inc/DictLinkDef.h)
-#add_library(Tracklib SHARED ../analysis_V2/src/ScintillatorBar_V2.cpp ../analysis_V2/src/SingleMuonTrack.cpp ../analysis_V2/src/Point3D.cpp G__Tomo.cxx)
-
-#target_link_libraries(Tracklib ${ROOT_LIBRARIES})
-
 
 ROOT_GENERATE_DICTIONARY(G__IsmranAnalysis inc/ScintillatorBar_F.h inc/SingleMuonTrack.h inc/MuonPeakAnalyzer.h LINKDEF inc/DictLinkDef.h)
 file(GLOB analysisSources ${PROJECT_SOURCE_DIR}/src/*.cpp) 
