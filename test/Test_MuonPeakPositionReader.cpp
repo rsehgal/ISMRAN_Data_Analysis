@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
 
     for (unsigned int j = 0; j < 96; j++) {
       vecOfHistOfPeakShift[j]->Fill(peakAnalyzer->GetVectorOfPeakPositions()[j]);
+	std::cout <<"BarIndex : " << (j+1) <<" : PeakPos : " << peakAnalyzer->GetVectorOfPeakPositions()[j] << std::endl;
     }
     // std::cout << "FileName  ; " << peakAnalyzer->GetFileName() << std::endl;
   }

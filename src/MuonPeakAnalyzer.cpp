@@ -21,17 +21,17 @@ MuonPeakAnalyzer::MuonPeakAnalyzer() {}
 
 MuonPeakAnalyzer::~MuonPeakAnalyzer() {}
 
-MuonPeakAnalyzer::MuonPeakAnalyzer(std::string filename) : fFileName(filename)
+MuonPeakAnalyzer::MuonPeakAnalyzer(std::string filename, unsigned int barIndex) : fFileName(filename)
 {
   fVecOfPeakPos.clear();
-  FillMuonPeakPosVector();
+  FillMuonPeakPosVector(barIndex);
 }
 
-MuonPeakAnalyzer::MuonPeakAnalyzer(MuonPeakAnalyzer &obj) 
+MuonPeakAnalyzer::MuonPeakAnalyzer(MuonPeakAnalyzer &obj)
 {
-  fFileName = obj.GetFileName();
-  fVecOfPeakPos=obj.GetVectorOfPeakPositions();
-  fFileTime = obj.GetFileTime(); 
+  fFileName     = obj.GetFileName();
+  fVecOfPeakPos = obj.GetVectorOfPeakPositions();
+  fFileTime     = obj.GetFileTime();
 }
 
 void MuonPeakAnalyzer::SetFileName(std::string filename)
@@ -56,40 +56,56 @@ std::vector<unsigned int> MuonPeakAnalyzer::GetVectorOfPeakPositions() const
 
 unsigned int MuonPeakAnalyzer::GetRunNumber() {}
 
-void MuonPeakAnalyzer::FillMuonPeakPosVector()
+void MuonPeakAnalyzer::FillMuonPeakPosVector(unsigned int barIndex)
 {
-  ismran::Analyzer_F an(fFileName);
+  std::cout << RED << "Started the work of filling peak position vector ...." << RESET << std::endl;
+  ismran::Analyzer_F an(fFileName,1000000);
   fFileTime = an.GetFileTime();
   std::cout << "FileTime : " << fFileTime << std::endl;
-  std::vector<ismran::ScintillatorBar_F *> vecOfScint = an.GetVectorOfScintillators();
+  std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
+  std::cout << RED << "Vector of scintillator filled........" << RESET << std::endl;
   ismran::InitializeHistograms();
-  std::vector<TH1F *> vecOfQMeanHist = ismran::GetQMeanPlots(vecOfScint);
+  std::vector<std::shared_ptr<TH1F>> vecOfQMeanHist = ismran::GetQMeanPlots(vecOfScint);
+  std::cout << BLUE << "QMean histograms received......." << RESET << std::endl;
 
-  for (unsigned int i = 0; i < vecOfQMeanHist.size(); i++) {
-    fVecOfPeakPos.push_back(FindMuonPeakPos(vecOfQMeanHist[i]));
+  vecOfScint.clear();
+  std::cout << MAGENTA << "Scint vector cleared........" << RESET << std::endl;
+
+  if (barIndex == 500) {
+    for (unsigned int i = 0; i < vecOfQMeanHist.size(); i++) {
+      fVecOfPeakPos.push_back(FindMuonPeakPos(vecOfQMeanHist[i].get()));
+    }
+  } else {
+    fVecOfPeakPos.push_back(FindMuonPeakPos(vecOfQMeanHist[barIndex].get()));
   }
+  vecOfQMeanHist.clear();
 }
 
 unsigned int MuonPeakAnalyzer::FindMuonPeakPos(TH1F *hist)
 {
   Int_t npeaks = 10;
-  hist->Rebin(8);
+  hist->Rebin(16);
   hist->GetXaxis()->SetRangeUser(2000, 25000);
   // npeaks = TMath::Abs(npeaks);
   TSpectrum *s = new TSpectrum(2 * npeaks);
-  Int_t nfound = s->Search(hist, 2, "", 0.40);
+  Int_t nfound = s->Search(hist, 2, "", 0.60);
   if (nfound > 1) {
     std::cout << RED << hist->GetName() << " : Found : " << nfound << " Peaks" << RESET << std::endl;
   }
   //  std::cout << "Found : " << nfound << " : candidate peaks to fit" << std::endl;
   Double_t *xpeaks;
   xpeaks = s->GetPositionX();
-  for (unsigned short p = 0; p < nfound; p++) {
+  double sum = 0;  
+for (unsigned short p = 0; p < nfound; p++) {
     Double_t xp = xpeaks[p];
-    // std::cout << "Peak Location : " << xp << std::endl;
+    std::cout << BLUE << hist->GetName() <<  " : Peak Location : " << xp << RESET <<  std::endl;
+    sum += xp;
   }
 
-  return (int)xpeaks[nfound - 1];
+  //return (int)xpeaks[nfound - 1];
+  sum /= nfound;
+  std::cout << MAGENTA <<  "FINAL RETURN VaLUE : " << sum << RESET << std::endl;
+  return sum;
 }
 
 unsigned int MuonPeakAnalyzer::GetFileTime() const

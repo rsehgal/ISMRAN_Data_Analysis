@@ -16,7 +16,8 @@ int main(int argc, char *argv[])
 {
   // TFile *peakPosFile                         = new TFile("MuonPeakPositions.root", "RECREATE");
   std::string filename                       = argv[1];
-  TFile *peakPosFile                         = new TFile(argv[2], "RECREATE");
+  //TFile *peakPosFile                         = new TFile(argv[2], "RECREATE");
+  TFile *peakPosFile                         = new TFile(("MuonPeak_"+ismran::GetBaseName(argv[1])).c_str(), "RECREATE");
   TTree *peakPosTree                         = new TTree("MuonPeakPositionsTree", "MuonPeakPositionsTree");
   ismran::MuonPeakAnalyzer *muonPeakAnalyzer = new ismran::MuonPeakAnalyzer();
   peakPosTree->Branch("PeakPositions", "ismran::MuonPeakAnalyzer", &muonPeakAnalyzer);

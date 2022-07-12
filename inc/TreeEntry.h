@@ -27,7 +27,14 @@ struct TreeEntry {
     time   = t;
     dt     = delT;
   }
-
+  void Set(UShort_t br, UInt_t ql, ULong64_t ts, UInt_t t, Int_t delT = 0)
+  {
+    brch   = br;
+    qlong  = ql;
+    tstamp = ts;
+    time   = t;
+    dt     = delT;
+  }
   TreeEntry() {}
   ~TreeEntry() {}
 

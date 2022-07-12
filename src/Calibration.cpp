@@ -47,15 +47,15 @@ Calibration::Calibration(std::string fileName)
 {
   fFileName = fileName;
   TFile *fp = new TFile(fileName.c_str(), "r");
-  unsigned int numOfBars = vecOfBarsNamess.size(); // vecOfBarsName.size();
+  unsigned int numOfBars = vecOfPsBars.size(); // vecOfBarsName.size();
   for (unsigned int barIndex = 0; barIndex < numOfBars; barIndex++) {
 
-    TF1 *delTShift_F = (TF1 *)fp->Get(Form("fdelt_shift_Cs137_%s_0cm", vecOfBarsNamess[barIndex].c_str()));
-    TF1 *paramertization_F = (TF1 *)fp->Get(Form("fzparam_%s", vecOfBarsNamess[barIndex].c_str()));
-    TF1 *enerCalibFormula = (TF1 *)fp->Get(Form("%s_Energy_F", vecOfBarsNamess[barIndex].c_str()));
+    TF1 *delTShift_F = (TF1 *)fp->Get(Form("fdelt_shift_Cs137_%s_0cm", vecOfPsBars[barIndex].c_str()));
+    TF1 *paramertization_F = (TF1 *)fp->Get(Form("fzparam_%s", vecOfPsBars[barIndex].c_str()));
+    TF1 *enerCalibFormula = (TF1 *)fp->Get(Form("%s_Energy_F", vecOfPsBars[barIndex].c_str()));
 
     std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
-    std::cout << "Processing Bar : " << vecOfBarsNamess[barIndex] << std::endl;
+    std::cout << "Processing Bar : " << vecOfPsBars[barIndex] << std::endl;
     std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
 
     fVecOfCalibrationData.push_back(new CalibrationData(delTShift_F, paramertization_F, enerCalibFormula)); 
