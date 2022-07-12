@@ -2,8 +2,12 @@ README file for ISRMAN data analysis code.
 
 
 --------------------------------
-Dependencies :  ROOT
+Dependencies :  ROOT , Ismran_Dqm_Precompiled
 --------------------------------
+
+Kindly clone the Ismran_Dqm_Precompiled repository from  
+https://github.com/rsehgal/Ismran_Dqm_Precompiled  
+and set the required environment variable as mentioned on the home page of the repo.  
 
 --------------------------------
 Compiling the code
