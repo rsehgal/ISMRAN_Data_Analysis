@@ -20,19 +20,25 @@ int main(int argc, char *argv[])
   // std::string peakPosFileLoc = "../datafiles";
   std::string fullPathPeakPosFile = peakPosFileLoc + "/MuonPeak_" + ismran::GetBaseName(fileName);
   std::cout << RED << fullPathPeakPosFile << RESET << std::endl;
-
-#ifdef USE_EXISTING_MUON_PEAK_FILE
-  ismran::vecOfPeakPos = ismran::GetPeakPosVec_Direct(".", "MuonPeak.root");
-#else
-  ismran::vecOfPeakPos = ismran::GetPeakPosVec();//peakPosFileLoc, ismran::GetBaseName(fileName));
-#endif
+  /*
+  #ifdef USE_EXISTING_MUON_PEAK_FILE
+    ismran::vecOfPeakPos = ismran::GetPeakPosVec_Direct(".", "MuonPeak.root");
+  #else
+    ismran::vecOfPeakPos = ismran::GetPeakPosVec();//peakPosFileLoc, ismran::GetBaseName(fileName));
+  #endif
+  */
   std::string outputFileName = argv[2];
-
   /* Accepting NumOfShots and ShotNo from the caller or a calling shell script*/
   ismran::Analyzer_F::numOfShots = std::atoi(argv[3]);
   ismran::Analyzer_F::shotNo     = std::atoi(argv[4]);
 
   ismran::Analyzer_F an(fileName);
+#ifdef USE_EXISTING_MUON_PEAK_FILE
+  ismran::vecOfPeakPos = an.GetPeakPosVec_Direct();
+#else
+  ismran::vecOfPeakPos = an.GetPeakPosVec();
+#endif
+
   std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
   ismran::InitializeHistograms();
   for (unsigned int i = 0; i < vecOfScint.size(); i++) {

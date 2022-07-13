@@ -36,7 +36,11 @@ public:
   unsigned int GetFileTime()const;
   //std::vector<unsigned int> GetPeakPosVec(std::string peakPosFileLoc="/home/rsehgal/myAmbar/MuonSinglePointCalibration");
   std::vector<unsigned int> GetPeakPosVec(std::string peakPosFileLoc=".");
+#ifdef FOLDED_DATA
   std::vector<unsigned int> GetPeakPosVec_Direct(std::string peakPosFile="MuonPeak.root");
+#else
+  std::vector<unsigned int> GetPeakPosVec_Direct(std::string peakPosFile="MuonPeak_H9.root");
+#endif
 
 public:
   /*
