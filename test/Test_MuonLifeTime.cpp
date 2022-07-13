@@ -19,14 +19,24 @@ int main(int argc, char *argv[])
   TApplication *fApp       = new TApplication("TEST", NULL, NULL);
   unsigned int numOfEvents = std::atoi(argv[2]);
   ismran::Analyzer_F an(argv[1], numOfEvents);
+#ifdef USE_EXISTING_MUON_PEAK_FILE
+  ismran::vecOfPeakPos = an.GetPeakPosVec_Direct();
+#ifdef VERBOSE
+  std::cout << BLUE << "Going to if..." << RESET << std::endl;
+#endif
+#else
+#ifdef VERBOSE
+  std::cout << RED << "Going to else..." << RESET << std::endl;
+#endif
   ismran::vecOfPeakPos = an.GetPeakPosVec();
+#endif
 
   TFile *fp = new TFile(("MuonLifeTime_" + ismran::GetBaseName(argv[1])).c_str(), "RECREATE");
   std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
   // std::vector<std::shared_ptr<ismran::SingleMuonTrack>> smtVec       = an.ReconstructMuonTrack();
   // std::vector<ismran::SingleMuonTrack*> smtVec       = an.ReconstructMuonTrack();
 
-  std::vector<unsigned int> vecOfPeakPos = an.GetPeakPosVec();
+  // std::vector<unsigned int> vecOfPeakPos = an.GetPeakPosVec();
 
   bool start          = false;
   ULong64_t startTime = 0.;
@@ -34,20 +44,24 @@ int main(int argc, char *argv[])
 
   TH1F *hist = new TH1F("MuonLifeTime", "MuonLifetime", 150, 0, 15.);
   for (unsigned int i = 0; i < vecOfScint.size(); i++) {
-    //double qmeanCorr = vecOfScint[i]->GetQMeanCorrected(vecOfPeakPos[vecOfScint[i]->GetBarIndex()]);
-    double qmeanCorr = vecOfScint[i]->GetQMeanCorrected();//vecOfPeakPos[vecOfScint[i]->GetBarIndex()]);
+    // double qmeanCorr = vecOfScint[i]->GetQMeanCorrected(vecOfPeakPos[vecOfScint[i]->GetBarIndex()]);
+    double qmeanCorr = vecOfScint[i]->GetQMeanCorrected(); // vecOfPeakPos[vecOfScint[i]->GetBarIndex()]);
 
     // For muon start signal
-    if ((qmeanCorr > 10) && (qmeanCorr < 25) 
-	&& (vecOfScint[i]->GetLayerIndex() == 9)
-	) {
-      //startTime = vecOfScint[i]->GetTStampNear();
+    if ((qmeanCorr > 10) && (qmeanCorr < 25)
+#ifdef FOLDED_DATA
+        && (vecOfScint[i]->GetLayerIndex() == 9)
+#else
+        && (vecOfScint[i]->GetLayerIndex() == 4)
+#endif
+    ) {
+      // startTime = vecOfScint[i]->GetTStampNear();
       startTime = vecOfScint[i]->GetTStampSmall();
     }
 
     // For electron delay signal
     if ((qmeanCorr > 3) && (qmeanCorr < 30)) {
-      //endTime       = vecOfScint[i]->GetTStampNear();
+      // endTime       = vecOfScint[i]->GetTStampNear();
       endTime       = vecOfScint[i]->GetTStampSmall();
       Long64_t delT = endTime - startTime;
       if (delT > 1000000 && delT < 15000000) {

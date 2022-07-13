@@ -11,6 +11,7 @@
 #include "SingleMuonTrack.h"
 #include "PairFinder.h"
 #include "TreeEntry.h"
+#include "colors.h"
 namespace ismran {
 
 unsigned int Analyzer_F::numOfShots = 1;
@@ -221,7 +222,7 @@ void Analyzer_F::LoadData(unsigned int numOfEvents)
 // std::vector<std::shared_ptr<SingleMuonTrack>> Analyzer_F::ReconstructMuonTrack()
 std::vector<SingleMuonTrack *> Analyzer_F::ReconstructMuonTrack()
 {
-  //std::vector<unsigned int> vecOfPeakPos = GetPeakPosVec();
+  // std::vector<unsigned int> vecOfPeakPos = GetPeakPosVec();
   std::cout << "Going to Create Muon Tracks.................." << std::endl;
   std::sort(fVecOfScint_F.begin(), fVecOfScint_F.end(), CompareTimestampScintillator);
   unsigned int scintVecSize = fVecOfScint_F.size();
@@ -234,7 +235,7 @@ std::vector<SingleMuonTrack *> Analyzer_F::ReconstructMuonTrack()
   // std::string
   // outfileName="/home/rsehgal/myAmbar/MuonTracks/Muon_Tracks_"+ismran::GetFileNameWithoutExtension(GetBaseName(fDatafileName))+".root";
   std::string outfileName = //"/home/rsehgal/MuonTracks/Muon_Tracks_" +
-      "MuonTracks_"+ismran::GetFileNameWithoutExtension(GetBaseName(fDatafileName)) + ".root";
+      "MuonTracks_" + ismran::GetFileNameWithoutExtension(GetBaseName(fDatafileName)) + ".root";
   // TFile *tracksFile = new TFile("MuonTracks.root", "RECREATE");
   TFile *tracksFile = new TFile(outfileName.c_str(), "RECREATE");
   tracksFile->cd();
@@ -244,7 +245,7 @@ std::vector<SingleMuonTrack *> Analyzer_F::ReconstructMuonTrack()
 
   ULong64_t tStart = fVecOfScint_F[0]->GetTStampSmall();
   for (unsigned int i = 1; i < scintVecSize; i++) {
-    //if (fVecOfScint_F[i]->GetQMeanCorrected(vecOfPeakPos[fVecOfScint_F[i]->GetBarIndex()]) > qmeanCorrThreshold) {
+    // if (fVecOfScint_F[i]->GetQMeanCorrected(vecOfPeakPos[fVecOfScint_F[i]->GetBarIndex()]) > qmeanCorrThreshold) {
     if (fVecOfScint_F[i]->GetQMeanCorrected() > qmeanCorrThreshold) {
       if (std::fabs(fVecOfScint_F[i]->GetTStampSmall() - tStart) < 20000) {
         // Within 20ns window
@@ -275,6 +276,9 @@ std::vector<unsigned int> Analyzer_F::GetPeakPosVec(std::string peakPosFileLoc)
 }
 std::vector<unsigned int> Analyzer_F::GetPeakPosVec_Direct(std::string peakPosFile)
 {
+#ifdef VERBOSE
+  std::cout << RED << "PEAK pos file : " << peakPosFile << RESET << std::endl;
+#endif
   return ismran::GetPeakPosVec_Direct(".", peakPosFile);
 }
 

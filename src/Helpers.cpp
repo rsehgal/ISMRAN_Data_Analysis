@@ -77,7 +77,10 @@ std::vector<unsigned int> GetPeakPosVec(std::string filename)
 }
 std::vector<unsigned int> GetPeakPosVec_Direct(std::string dirpath, std::string filename)
 {
-  TFile *fp                              = new TFile((dirpath +"/"+ filename).c_str(), "r");
+#ifdef VERBOSE
+  std::cout << BLUE << "Peak pos file name from Helpers : " << filename << RESET << std::endl;
+#endif
+  TFile *fp                              = new TFile((dirpath + "/" + filename).c_str(), "r");
   TTree *MuonPeakPositionsTree           = (TTree *)fp->Get("MuonPeakPositionsTree");
   ismran::MuonPeakAnalyzer *peakAnalyzer = new ismran::MuonPeakAnalyzer;
   MuonPeakPositionsTree->SetBranchAddress("PeakPositions", &peakAnalyzer);
