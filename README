@@ -18,7 +18,8 @@ git clone http://github.com/rsehgal/ISMRAN_Data_Analysis
 
 cd ISMRAN_Data_Analysis
 mkdir build
-cd build
+cd build  
+Copy all the .root files from *rootfile* directory to this build directory  
 cmake ..
 make -j2
  
