@@ -12,7 +12,9 @@
 #include <experimental/filesystem>
 #include "colors.h"
 #include "MuonPeakAnalyzer.h"
+#ifndef USHRT_MAX
 #define USHRT_MAX 65535
+#endif
 using std::cin;
 using std::cout;
 using std::endl;

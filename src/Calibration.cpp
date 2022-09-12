@@ -41,6 +41,7 @@ Calibration *Calibration::instance()
     std::cout << "@@ Instance of Calibration class does not exist in Memory, please create it first....@@" << std::endl;
     std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
   }
+  return s_instance;
 }
 
 Calibration::Calibration(std::string fileName)

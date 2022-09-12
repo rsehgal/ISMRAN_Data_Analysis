@@ -6,7 +6,9 @@
 //#include "Analyzer.h"
 #include "colors.h"
 #define cm 10
+#ifndef USHRT_MAX
 #define USHRT_MAX 65535
+#endif
 ClassImp(ismran::ScintillatorBar_F);
 namespace ismran {
 
@@ -90,6 +92,7 @@ ushort ScintillatorBar_F::GetLayerIndex()
 #else
   layerIndex      = fBarIndex % numOfLayers;
 #endif
+  return layerIndex;
 }
 
 ushort ScintillatorBar_F::GetBarIndexInLayer()
@@ -103,6 +106,7 @@ ushort ScintillatorBar_F::GetBarIndexInLayer()
   barIndexInLayer = (fBarIndex - GetLayerIndex()) / numOfBarsInEachLayer;
 
 #endif
+  return barIndexInLayer;
 }
 UInt_t ScintillatorBar_F::GetQNear()
 {

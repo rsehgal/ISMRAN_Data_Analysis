@@ -26,6 +26,7 @@ option(FOLDED_DATA "Use FOLDED_DATA" ON)
 option(VERBOSE "Switching it ON will a lot of debuggin info" OFF)
 option(DEB "Use extra data member for debuggin" OFF)
 option(USE_EXISTING_MUON_PEAK_FILE "Use the existing muon peak file" ON)
+option(USE_PRECOMPILED_DQM_LIB "Use the precomiled dqm libraries" OFF)
 
 if(USE_EXISTING_MUON_PEAK_FILE)
 add_definitions(-DUSE_EXISTING_MUON_PEAK_FILE)
@@ -59,10 +60,18 @@ find_package(MYSQL REQUIRED)
 include_directories(${MYSQL_INCLUDE_DIR})
 message(STATUS "mysql inc : ${MYSQL_INCLUDE_DIR}")
 
-
+if(USE_PRECOMPILED_DQM_LIB)
 find_package(Dqm REQUIRED)
 message(STATUS ${Dqm_INCLUDE_DIR})
 include_directories(${Dqm_INCLUDE_DIR})
+SET(DQM_LIB ${Dqm_LIBRARIES})
+else()
+add_subdirectory(ISMRAN_dqm)
+link_directories(${CMAKE_SOURCE_DIR}/ISMRAN_dqm)
+include_directories(${CMAKE_SOURCE_DIR}/ISMRAN_dqm/inc)
+SET(DQM_LIB Dqm)
+endif(USE_PRECOMPILED_DQM_LIB)
+
 
 include_directories(${PROJECT_SOURCE_DIR}/inc)
 
@@ -70,6 +79,10 @@ ROOT_GENERATE_DICTIONARY(G__IsmranAnalysis inc/ScintillatorBar_F.h inc/SingleMuo
 file(GLOB analysisSources ${PROJECT_SOURCE_DIR}/src/*.cpp) 
 add_library(Analysis SHARED ${analysisSources} G__IsmranAnalysis.cxx)
 target_link_libraries(Analysis ${ROOT_LIBRARIES})
+
+file(GLOB ROOT_FILES ${PROJECT_SOURCE_DIR}/rootfiles/*)
+#message(STATUS ${ROOT_FILES})
+file(COPY ${ROOT_FILES} DESTINATION ${PROJECT_SOURCE_DIR}/build)
 
 SET(TESTSDIR ${TESTSDIR}
 ${CMAKE_SOURCE_DIR}/test
@@ -89,7 +102,8 @@ macro(build_executables EXECUTABLES)
   foreach(EXECUTABLE ${EXECUTABLES})
     get_filename_component(TARGET_NAME ${EXECUTABLE} NAME_WE)
     add_executable(${TARGET_NAME} ${EXECUTABLE} ${headers} ${sources})
-    target_link_libraries(${TARGET_NAME} ${ROOT_LIBRARIES} Analysis Spectrum stdc++fs ${Dqm_LIBRARIES})
+    target_link_libraries(${TARGET_NAME} ${ROOT_LIBRARIES} Analysis Spectrum stdc++fs ${DQM_LIB})
+    #target_link_libraries(${TARGET_NAME} ${ROOT_LIBRARIES} Analysis Spectrum stdc++fs ${Dqm_LIBRARIES})
     #target_link_libraries(${TARGET_NAME} ${ROOT_LIBRARIES} Analysis Spectrum stdc++fs)
  endforeach()
 endmacro()

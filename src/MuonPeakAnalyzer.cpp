@@ -54,7 +54,9 @@ std::vector<unsigned int> MuonPeakAnalyzer::GetVectorOfPeakPositions() const
   return fVecOfPeakPos;
 }
 
-unsigned int MuonPeakAnalyzer::GetRunNumber() {}
+unsigned int MuonPeakAnalyzer::GetRunNumber() {
+return 0;
+}
 
 void MuonPeakAnalyzer::FillMuonPeakPosVector(unsigned int barIndex)
 {
