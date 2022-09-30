@@ -101,7 +101,13 @@ int main(int argc, char *argv[])
   }
   std::cout << "Size of vecOfScint : " << vecOfScint.size() << std::endl;
   fpT.close();
-  hist->Draw();
+  //hist->Draw();
+
+  hist->Rebin(2);
+  TF1 *fitFunc = new TF1("fitFunc", "([1]*exp(-x/[0])) + [2] ",1.8,15);
+  fitFunc->SetParameters(2.2,10,10);
+  fitFunc->SetParNames("#tau","N","C");
+  hist->Fit(fitFunc,"R");
   fp->cd();
 
   
@@ -110,7 +116,8 @@ int main(int argc, char *argv[])
   } 
   binContent.close();
   hist->Write();
+  hist->Draw("ap");
   fp->Close();
-  // fApp->Run();
+  // fApp->Run();  
   return 0;
 }
