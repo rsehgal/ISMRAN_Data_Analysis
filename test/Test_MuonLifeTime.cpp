@@ -14,8 +14,11 @@
 #include <TApplication.h>
 #include "Helpers.h"
 #include "HardwareNomenclature.h"
+#include "fstream"
 int main(int argc, char *argv[])
 {
+  std::ofstream fpT("histData.txt");
+  std::ofstream binContent("histData_XY.txt");
   TApplication *fApp       = new TApplication("TEST", NULL, NULL);
   unsigned int numOfEvents = std::atoi(argv[2]);
   ismran::Analyzer_F an(argv[1], numOfEvents);
@@ -67,6 +70,7 @@ int main(int argc, char *argv[])
       if (delT > 1000000 && delT < 15000000) {
         // std::cout << GREEN << (delT/1e+6) << " us....." <<RESET << std::endl;
         hist->Fill(((1. * delT) / 1e+6));
+ 	fpT << ((1. * delT) / 1e+6) << std::endl;
       }
     }
 
@@ -96,8 +100,15 @@ int main(int argc, char *argv[])
     }*/
   }
   std::cout << "Size of vecOfScint : " << vecOfScint.size() << std::endl;
+  fpT.close();
   hist->Draw();
   fp->cd();
+
+  
+  for(unsigned int i = 1 ; i < hist->GetNbinsX()-1 ; i++){
+	binContent << i<<","<<hist->GetBinContent(i)<<std::endl;
+  } 
+  binContent.close();
   hist->Write();
   fp->Close();
   // fApp->Run();
