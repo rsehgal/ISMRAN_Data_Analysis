@@ -35,7 +35,8 @@ int main(int argc, char *argv[])
 #endif
 
   TFile *fp = new TFile(("MuonLifeTime_" + ismran::GetBaseName(argv[1])).c_str(), "RECREATE");
-  std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
+  //std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
+  std::vector<ismran::ScintillatorBar_F*> vecOfScint = an.GetVectorOfScintillators();
   // std::vector<std::shared_ptr<ismran::SingleMuonTrack>> smtVec       = an.ReconstructMuonTrack();
   // std::vector<ismran::SingleMuonTrack*> smtVec       = an.ReconstructMuonTrack();
 

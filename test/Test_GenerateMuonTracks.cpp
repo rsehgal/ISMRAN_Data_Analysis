@@ -20,7 +20,8 @@ int main(int argc, char *argv[])
 #else
   ismran::vecOfPeakPos = an.GetPeakPosVec();
 #endif
-  std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
+  std::vector<ismran::ScintillatorBar_F*> vecOfScint = an.GetVectorOfScintillators();
+  //std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
   //std::vector<std::shared_ptr<ismran::SingleMuonTrack>> smtVec       = an.ReconstructMuonTrack();
   std::vector<ismran::SingleMuonTrack*> smtVec       = an.ReconstructMuonTrack();
 #if (0)

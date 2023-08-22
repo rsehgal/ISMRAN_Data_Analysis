@@ -10,7 +10,8 @@
 #include <string>
 namespace ismran {
 
-extern bool CompareTimestampScintillator(std::shared_ptr<ScintillatorBar_F> i1, std::shared_ptr<ScintillatorBar_F> i2);
+extern bool CompareTimestampScintillator(ScintillatorBar_F* i1, ScintillatorBar_F* i2);
+//extern bool CompareTimestampScintillator(std::shared_ptr<ScintillatorBar_F> i1, std::shared_ptr<ScintillatorBar_F> i2);
 extern std::vector<ismran::SingleMuonTrack*> GetMuonTracksVector(std::string filename, std::string treeName="TracksTree", unsigned int numOfEvents=0);
 extern std::vector<std::string> GetVectorOfFileNameInADirectory(std::string directoryPath);
 extern std::string GetBaseName(std::string const &path);

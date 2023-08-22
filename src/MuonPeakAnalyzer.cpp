@@ -64,10 +64,12 @@ void MuonPeakAnalyzer::FillMuonPeakPosVector(unsigned int barIndex)
   ismran::Analyzer_F an(fFileName,1000000);
   fFileTime = an.GetFileTime();
   std::cout << "FileTime : " << fFileTime << std::endl;
-  std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
+  std::vector<ismran::ScintillatorBar_F*> vecOfScint = an.GetVectorOfScintillators();
+  //std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
   std::cout << RED << "Vector of scintillator filled........" << RESET << std::endl;
   ismran::InitializeHistograms();
-  std::vector<std::shared_ptr<TH1F>> vecOfQMeanHist = ismran::GetQMeanPlots(vecOfScint);
+  std::vector<TH1F*> vecOfQMeanHist = ismran::GetQMeanPlots(vecOfScint);
+  //std::vector<std::shared_ptr<TH1F>> vecOfQMeanHist = ismran::GetQMeanPlots(vecOfScint);
   std::cout << BLUE << "QMean histograms received......." << RESET << std::endl;
 
   vecOfScint.clear();
@@ -75,10 +77,10 @@ void MuonPeakAnalyzer::FillMuonPeakPosVector(unsigned int barIndex)
 
   if (barIndex == 500) {
     for (unsigned int i = 0; i < vecOfQMeanHist.size(); i++) {
-      fVecOfPeakPos.push_back(FindMuonPeakPos(vecOfQMeanHist[i].get()));
+      fVecOfPeakPos.push_back(FindMuonPeakPos(vecOfQMeanHist[i]));
     }
   } else {
-    fVecOfPeakPos.push_back(FindMuonPeakPos(vecOfQMeanHist[barIndex].get()));
+    fVecOfPeakPos.push_back(FindMuonPeakPos(vecOfQMeanHist[barIndex]));
   }
   vecOfQMeanHist.clear();
 }

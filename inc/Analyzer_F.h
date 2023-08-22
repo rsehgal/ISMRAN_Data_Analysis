@@ -20,7 +20,8 @@ class Analyzer_F {
 
 private:
   std::string fDatafileName;
-  std::vector<std::shared_ptr<ScintillatorBar_F>> fVecOfScint_F;
+  //std::vector<std::shared_ptr<ScintillatorBar_F>> fVecOfScint_F;
+  std::vector<ScintillatorBar_F*> fVecOfScint_F;
   unsigned int fFileTime;
   PairFinder pf;
 
@@ -29,7 +30,8 @@ public:
   Analyzer_F(std::string datafilename,unsigned int numOfEvents=0);
   ~Analyzer_F();
   void LoadData(unsigned int numOfEvents);
-  std::vector<std::shared_ptr<ScintillatorBar_F>> GetVectorOfScintillators();
+  std::vector<ScintillatorBar_F*> GetVectorOfScintillators();
+  //std::vector<std::shared_ptr<ScintillatorBar_F>> GetVectorOfScintillators();
   std::vector<SingleMuonTrack*> ReconstructMuonTrack();
   //std::vector<std::shared_ptr<SingleMuonTrack>> ReconstructMuonTrack();
   //std::vector<SingleMuonTrack *> ReconstructMuonTrack();

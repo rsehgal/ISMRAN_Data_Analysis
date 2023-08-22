@@ -28,8 +28,8 @@ std::string GetBaseName(std::string const &path)
   return path.substr(path.find_last_of("/\\") + 1);
 }
 
-// bool CompareTimestampScintillator(ScintillatorBar_F *i1, ScintillatorBar_F *i2)
-bool CompareTimestampScintillator(std::shared_ptr<ScintillatorBar_F> i1, std::shared_ptr<ScintillatorBar_F> i2)
+bool CompareTimestampScintillator(ScintillatorBar_F *i1, ScintillatorBar_F *i2)
+//bool CompareTimestampScintillator(std::shared_ptr<ScintillatorBar_F> i1, std::shared_ptr<ScintillatorBar_F> i2)
 {
   return (i1->GetTStampSmall() < i2->GetTStampSmall());
 }
