@@ -259,7 +259,7 @@ std::vector<SingleMuonTrack *> Analyzer_F::ReconstructMuonTrack()
         singleMuonTrack->Sort();
         // singleMuonTrack->Print();
         // smtVec.push_back(std::shared_ptr<SingleMuonTrack>(new SingleMuonTrack(*singleMuonTrack)));
-        // smtVec.push_back(new SingleMuonTrack(*singleMuonTrack));
+        smtVec.push_back(new SingleMuonTrack(*singleMuonTrack));
         tracksTree->Fill();
         singleMuonTrack->clear();
         singleMuonTrack->push_back(fVecOfScint_F[i]);

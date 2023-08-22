@@ -24,6 +24,29 @@ int main(int argc, char *argv[])
   //std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
   //std::vector<std::shared_ptr<ismran::SingleMuonTrack>> smtVec       = an.ReconstructMuonTrack();
   std::vector<ismran::SingleMuonTrack*> smtVec       = an.ReconstructMuonTrack();
+  std::cout << "Size of SMTVEC : " << smtVec.size() << std::endl;
+  unsigned int passingMuonCounter = 0;
+  unsigned int hittingAllLayerCounter=0;
+  TH1F *hist = new TH1F("Muons","Muons",20,0,20);
+  for(unsigned int i = 0 ; i < smtVec.size() ; i++){
+	if(smtVec[i]->IsPassingMuon()){
+		//std::cout <<"Passing muon number : " << passingMuonCounter << " : TrackLength : " << smtVec[i]->size() << std::endl;
+		hist->Fill(smtVec[i]->size());
+		if(smtVec[i]->size()==10)
+			hittingAllLayerCounter++;
+		passingMuonCounter++;
+			
+	}
+  }
+
+  std::cout << "Total number of passing muons : " << passingMuonCounter << std::endl;
+  std::cout << "Total number of passing muon that is detected by all the layers : " << hittingAllLayerCounter << std::endl;
+ TFile *outfile = new TFile("PassingMuons.root","RECREATE");
+  outfile->cd();
+  hist->Write();
+  outfile->Close();
+
+
 #if (0)
   unsigned int trackCounter = 0;
   for (unsigned int i = 0; i < smtVec.size(); i++) {

@@ -62,6 +62,13 @@ public:
    */
   void Print();
 
+  /*
+   * Some more functions 
+  */
+
+  //A muon that pass through top and bottom layer
+  bool IsPassingMuon();
+  
   ~SingleMuonTrack();
 
   ClassDef(SingleMuonTrack, 1)

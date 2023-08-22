@@ -131,4 +131,10 @@ ClassImp(ismran::SingleMuonTrack)
     }
     std::cout << std::endl;
   }
+
+  bool SingleMuonTrack::IsPassingMuon(){
+	unsigned int numOfHist_layer0 = NumOfHitsInLayer(0);
+	unsigned int numOfHist_layer9 = NumOfHitsInLayer(9);
+	return ((numOfHist_layer0 > 0) && (numOfHist_layer9 > 0));
+  }
 } // namespace ismran
