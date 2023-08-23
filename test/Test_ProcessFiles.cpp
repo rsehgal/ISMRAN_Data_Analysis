@@ -23,11 +23,16 @@ int main()
   std::cout << "FileName : " << vecOfMysqlRows[0][0] << std::endl;
 
   unsigned int counter=0;
+	char delim='_';
   for(unsigned int i = 0 ; i < vecOfMysqlRows.size() ; i++){
 	counter++;
 	
 	for(unsigned int j = 0 ; j < rowLen ; j++){
-	std::cout << vecOfMysqlRows[i][j] << " , ";
+	//std::cout << vecOfMysqlRows[i][j] << " , ";
+	std::string filename = vecOfMysqlRows[i][j];
+	  std::vector<std::string> tokensVector = ismran::GetStringTokens(filename,delim);
+	  int day = std::stoi(tokensVector[4].substr(0,2)); 
+	  std::cout << "Date : " << tokensVector[4] <<" : " << day << std::endl;
 	}
 	std::cout << std::endl;
   } 
