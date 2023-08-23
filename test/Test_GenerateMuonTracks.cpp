@@ -27,13 +27,19 @@ int main(int argc, char *argv[])
   std::cout << "Size of SMTVEC : " << smtVec.size() << std::endl;
   unsigned int passingMuonCounter = 0;
   unsigned int hittingAllLayerCounter=0;
+  unsigned int printCounter=0;
   TH1F *hist = new TH1F("Muons","Muons",20,0,20);
   for(unsigned int i = 0 ; i < smtVec.size() ; i++){
 	if(smtVec[i]->IsPassingMuon()){
+		if(printCounter < 5){
+			printCounter++;
+			//smtVec[i]->Print();
+		}
 		//std::cout <<"Passing muon number : " << passingMuonCounter << " : TrackLength : " << smtVec[i]->size() << std::endl;
 		hist->Fill(smtVec[i]->size());
-		if(smtVec[i]->size()==10)
+		if(smtVec[i]->size()>=10)
 			hittingAllLayerCounter++;
+
 		passingMuonCounter++;
 			
 	}
@@ -41,6 +47,8 @@ int main(int argc, char *argv[])
 
   std::cout << "Total number of passing muons : " << passingMuonCounter << std::endl;
   std::cout << "Total number of passing muon that is detected by all the layers : " << hittingAllLayerCounter << std::endl;
+ 
+ std::cout <<"Tracking efficiency  : " << ((1.*hittingAllLayerCounter)/(1.*passingMuonCounter)*100.) << std::endl;
  TFile *outfile = new TFile("PassingMuons.root","RECREATE");
   outfile->cd();
   hist->Write();

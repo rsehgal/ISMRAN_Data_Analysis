@@ -123,7 +123,7 @@ ClassImp(ismran::SingleMuonTrack)
 
   void SingleMuonTrack::Print()
   {
-    std::cout << "**************************************************************" << std::endl;
+    std::cout << RED << "******************** Size : " << size() << "***************************************" << RESET <<  std::endl;
     // std::vector<std::shared_ptr<ScintillatorBar_F>> scintBarVec = GetMuonTrack();
     std::vector<ScintillatorBar_F *> scintBarVec = GetMuonTrack();
     for (unsigned int i = 0; i < scintBarVec.size(); i++) {

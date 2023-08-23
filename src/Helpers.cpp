@@ -45,7 +45,7 @@ std::vector<ismran::SingleMuonTrack *> GetMuonTracksVector(std::string filename,
   TracksTree->SetBranchAddress("MuonTracks", &smt);
   Long64_t nentries = TracksTree->GetEntries();
   if (numOfEvents > 0) nentries = numOfEvents;
-  std::cout << "Num. of Muon tracks store in file : " << nentries << std::endl;
+  std::cout << "Num. of Muon tracks stored in file : " << nentries << std::endl;
   Long64_t nbytes = 0;
   std::vector<ismran::SingleMuonTrack *> smtVec;
   for (Long64_t i = 0; i < nentries; i++) {
