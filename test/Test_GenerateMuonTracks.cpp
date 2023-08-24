@@ -11,10 +11,22 @@
 #include <TFile.h>
 #include "HardwareNomenclature.h"
 #include "Helpers.h"
+#include <TString.h>
+#include "Database.h"
 int main(int argc, char *argv[])
 {
-  unsigned int numOfEvents = std::atoi(argv[2]);
-  ismran::Analyzer_F an(argv[1], numOfEvents);
+  unsigned int numOfEvents = 0;//std::atoi(argv[2]);
+  std::string filePath=std::string(argv[1]);
+  std::string justfilename=std::string(argv[2]);
+  TString compFileName=(filePath+"/"+justfilename).c_str();
+  TString oldSubStr="neutrino";
+  TString newSubStr="rsehgal";
+  compFileName.ReplaceAll(oldSubStr,newSubStr);
+  const char *updatedFileName = compFileName.Data();
+  //std::cout << "Updated File Name : " << updatedFileName << std::endl;
+  //return 0;
+  //ismran::Analyzer_F an(argv[1], numOfEvents);
+  ismran::Analyzer_F an(updatedFileName, numOfEvents);
 #ifdef USE_EXISTING_MUON_PEAK_FILE
   ismran::vecOfPeakPos = ismran::GetPeakPosVec_Direct(".","MuonPeak.root");
 #else
@@ -49,11 +61,11 @@ int main(int argc, char *argv[])
   std::cout << "Total number of passing muon that is detected by all the layers : " << hittingAllLayerCounter << std::endl;
  
  std::cout <<"Tracking efficiency  : " << ((1.*hittingAllLayerCounter)/(1.*passingMuonCounter)*100.) << std::endl;
- TFile *outfile = new TFile("PassingMuons.root","RECREATE");
+/* TFile *outfile = new TFile("PassingMuons.root","RECREATE");
   outfile->cd();
   hist->Write();
   outfile->Close();
-
+*/
 
 #if (0)
   unsigned int trackCounter = 0;
@@ -68,6 +80,9 @@ int main(int argc, char *argv[])
     }
   }
 #endif
+
+  ismran::Database d("127.0.0,1","ismran_db","ismran","ismran123");
+  d.Update("update ismran_files set muontracks="+std::to_string(passingMuonCounter)+" where fileName='"+justfilename+"'");
   return passingMuonCounter;
   //return 0;
 }
