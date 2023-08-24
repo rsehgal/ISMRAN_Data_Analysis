@@ -15,24 +15,26 @@ int main(int argc, char *argv[])
 {
 
   TApplication *fApp = new TApplication("App",NULL,NULL);
-  std::string year = std::string(argv[1]);
+  /*std::string year = std::string(argv[1]);
   std::vector<std::string> monthVec = {
 					"Jan","Feb","Mar","Apr",
 					"May","Jun","Jul","Aug",
 					"Sep","Oct","Nov","Dec",
-					};
+					};*/
 
   ismran::Database d("127.0.0.1", "ismran_db", "ismran", "ismran123");
   d.SetVerbose(true);
   d.Connect();
 
-  TFile *fp = new TFile(("DataStats_"+std::string(year)+".root").c_str(),"RECREATE");
-  fp->cd();
-  for(unsigned int monIndex = 0 ; monIndex < monthVec.size() ; monIndex++){ 
+//  TFile *fp = new TFile("DataStats.root","RECREATE");
+  //TFile *fp = new TFile(("DataStats_"+std::string(year)+".root").c_str(),"RECREATE");
+ // fp->cd();
+//  for(unsigned int monIndex = 0 ; monIndex < monthVec.size() ; monIndex++)
+{ 
   std::cout << "-----------Files to Check ----------------" << std::endl;
-  std::string monthYear=monthVec[monIndex]+year;
-  std::string query = "select FileName from ismran_files where processed=0 and FileName like '%"+monthYear+"%'";
-  //std::string query = "select FileName from ismran_files where processed=0 and FileName like '%"+std::string(argv[1])+"%'";
+  //std::string monthYear=monthVec[monIndex]+year;
+  //std::string query = "select FileName from ismran_files where processed=0 and FileName like '%"+monthYear+"%'";
+  std::string query = "select FileName from ismran_files where processed=0 and FileName like '%"+std::string(argv[1])+"%'";
 
   std::vector<MYSQL_ROW> vecOfMysqlRows = d.GetVectorOfFiles_FromQuery(query);
   unsigned short rowLen                 = 1; // d.GetMySqlRowLength(vecOfMysqlRows[0]);
@@ -40,7 +42,7 @@ int main(int argc, char *argv[])
   std::cout << "FileName : " << vecOfMysqlRows[0][0] << std::endl;
 
   //TH1F *monthHist = new TH1F("MonthHist","MonthHist",32,0,32);
-  TH1F *monthHist = new TH1F(monthYear.c_str(),monthYear.c_str(),32,0,32);
+  TH1F *monthHist = new TH1F(argv[1],argv[1],32,0,32);
 
   unsigned int counter                  = 0;
   char delim                            = '_';
@@ -91,11 +93,11 @@ int main(int argc, char *argv[])
     std::cout << filename << ": Date : " << tokensVector[4] << std::endl;
   }*/
   
-  //monthHist->Draw();
-  monthHist->Write();
+  monthHist->Draw();
+  //monthHist->Write();
 
 }
- fp->Close();
-//  fApp->Run();
+ //fp->Close();
+ fApp->Run();
   return 0;
 }
