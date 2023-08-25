@@ -20,13 +20,13 @@ int main(int argc, char *argv[])
   std::string justfilename = std::string(argv[2]);
   TString compFileName     = (filePath + "/" + justfilename).c_str();
   TString oldSubStr        = "neutrino";
-  TString newSubStr        = "rsehgal";
+  TString newSubStr        = "ismran";//"rsehgal";
   compFileName.ReplaceAll(oldSubStr, newSubStr);
   const char *updatedFileName = compFileName.Data();
   // std::cout << "Updated File Name : " << updatedFileName << std::endl;
 
-  unsigned int passingMuonCounter = 10;
-  {
+  unsigned int passingMuonCounter = 0;
+  /*{
     ismran::Database d("127.0.0.1", "ismran_db", "ismran", "ismran123");
     d.SetVerbose(true);
     d.Connect();
@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
   }
 
   return 0;
+  */
   // return 0;
   // ismran::Analyzer_F an(argv[1], numOfEvents);
   ismran::Analyzer_F an(updatedFileName, numOfEvents);
@@ -93,9 +94,13 @@ int main(int argc, char *argv[])
   }
 #endif
 
-  ismran::Database d("127.0.0,1", "ismran_db", "ismran", "ismran123");
-  d.Update("update ismran_files set muontracks=" + std::to_string(passingMuonCounter) + " where fileName='" +
-           justfilename + "'");
+  ismran::Database d("127.0.0.1", "ismran_db", "ismran", "ismran123");
+  d.SetVerbose(true);
+    d.Connect();
+
+    d.Update(std::string("update ismran_files set passingmuons=") + std::to_string(passingMuonCounter) +
+             std::string(" where fileName='") + justfilename + std::string("'"));
+
   return passingMuonCounter;
   // return 0;
 }
