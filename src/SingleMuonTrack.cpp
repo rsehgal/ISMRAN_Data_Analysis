@@ -137,4 +137,9 @@ ClassImp(ismran::SingleMuonTrack)
 	unsigned int numOfHist_layer9 = NumOfHitsInLayer(9);
 	return ((numOfHist_layer0 > 0) && (numOfHist_layer9 > 0));
   }
+
+   bool SingleMuonTrack::IsUpgoingMuon(){
+  	if(fVecOfScintillators[0]->GetTStampSmall() > fVecOfScintillators[size()-1]->GetTStampSmall())
+	       return true;	
+   }
 } // namespace ismran

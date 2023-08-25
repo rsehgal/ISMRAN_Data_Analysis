@@ -68,6 +68,8 @@ public:
 
   //A muon that pass through top and bottom layer
   bool IsPassingMuon();
+
+  bool IsUpgoingMuon();
   
   ~SingleMuonTrack();
 
