@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
   ismran::Analyzer_F an(argv[1], numOfEvents);
   ismran::vecOfPeakPos = an.GetPeakPosVec();
 
-  std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
+  std::vector<ismran::ScintillatorBar_F*> vecOfScint = an.GetVectorOfScintillators();
   unsigned int barIndex                                              = 12;
   unsigned int layerIndex                                            = 9;
 

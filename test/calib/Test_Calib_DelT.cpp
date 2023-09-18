@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
   //ismran::Analyzer_F an(argv[1],10000000);
   ismran::Analyzer_F an(argv[1]);
   ismran::vecOfPeakPos = an.GetPeakPosVec();
-  std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
+  std::vector<ismran::ScintillatorBar_F*> vecOfScint = an.GetVectorOfScintillators();
   for (unsigned int i = 0; i < vecOfScint.size(); i++) {
     if (vecOfScint[i]->GetBarIndex() == barIndex) {
       delT->Fill(vecOfScint[i]->GetDelT() / 1000.);
