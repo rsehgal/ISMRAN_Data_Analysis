@@ -31,6 +31,17 @@ ScintillatorBar_F::ScintillatorBar_F(unsigned int bIndex)
     : fBarIndex(bIndex), fQlong(0), fTstamp(0), fTime(0), fDelt(0), fQnear(0), fQfar(0)
 {
 }
+ScintillatorBar_F::ScintillatorBar_F(ULong64_t evNo,ushort barIndex, UInt_t qlong, ULong64_t tstamp, UInt_t wtime, Int_t deltstamp)
+    : fEvNo(evNo), fBarIndex(barIndex / 2), fQlong(qlong), fTstamp(tstamp), fTime(wtime), fDelt(deltstamp)
+{
+  unsigned short int maxU_16bits = USHRT_MAX;
+  UInt_t maskingVal              = maxU_16bits;
+  fQfar                          = (fQlong & maskingVal);
+  fQnear                         = (fQlong >> 16);
+#ifdef DEB
+  fBrCh = barIndex;
+#endif
+}
 
 ScintillatorBar_F::ScintillatorBar_F(ushort barIndex, UInt_t qlong, ULong64_t tstamp, UInt_t wtime, Int_t deltstamp)
     : fBarIndex(barIndex / 2), fQlong(qlong), fTstamp(tstamp), fTime(wtime), fDelt(deltstamp)
@@ -54,6 +65,7 @@ ScintillatorBar_F::ScintillatorBar_F(ushort barIndex, UInt_t qnear, UInt_t qfar,
 
 ScintillatorBar_F::ScintillatorBar_F(const ScintillatorBar_F &sbar)
 {
+  fEvNo = sbar.fEvNo;
   fBarIndex = sbar.fBarIndex;
   fQlong    = sbar.fQlong;
   fTstamp   = sbar.fTstamp;

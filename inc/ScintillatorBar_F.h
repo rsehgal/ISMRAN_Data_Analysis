@@ -29,6 +29,9 @@ private:
   ULong64_t fTstamp; // DAQ timestamp
   UInt_t fTime;      // Wall clock time
   Int_t fDelt;       // Time diff between left and right PMT
+  
+  //Storing the event no. corresponding to TTree
+  ULong64_t fEvNo;
 
   /*Only for H9 data*/
   UInt_t fQnear;
@@ -44,6 +47,7 @@ public:
   ScintillatorBar_F(unsigned int bIndex);
   // Required copy constructor
   ScintillatorBar_F(const ScintillatorBar_F &sbar);
+  ScintillatorBar_F(ULong64_t evNo,ushort barIndex, UInt_t qlong, ULong64_t tstamp, UInt_t wtime, Int_t deltstamp);
   ScintillatorBar_F(ushort barIndex, UInt_t qlong, ULong64_t tstamp, UInt_t wtime, Int_t deltstamp);
   ScintillatorBar_F(ushort barIndex, UInt_t qnear, UInt_t qfar, ULong64_t tstamp, UInt_t wtime, Int_t deltstamp);
 
@@ -60,6 +64,7 @@ public:
   ushort GetBarIndex() const;
   ushort GetLayerIndex();
   ushort GetBarIndexInLayer();
+  ULong64_t GetEvNo()const {return fEvNo;}
 
   // Charge related
   UInt_t GetQNear();

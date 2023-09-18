@@ -49,6 +49,7 @@ ClassImp(ismran::SingleMuonTrack)
   // std::shared_ptr<ScintillatorBar_F> i2)
   bool SingleMuonTrack::CompareBarIndexInScintillator(ScintillatorBar_F * i1, ScintillatorBar_F * i2)
   {
+    //return (i1->GetLayerIndex() > i2->GetLayerIndex());
     return (i1->GetBarIndex() > i2->GetBarIndex());
   }
 
@@ -116,14 +117,15 @@ ClassImp(ismran::SingleMuonTrack)
      */
     bool singleHit = true;
     for (unsigned int i = 0; i < numOfLayers; i++) {
-      singleHit &= (vecOfNumOfHits[i] <= 1);
+      singleHit &= (vecOfNumOfHits[i] == 1);
     }
     return singleHit;
   }
 
   void SingleMuonTrack::Print()
   {
-    std::cout << RED << "******************** Size : " << size() << "***************************************" << RESET <<  std::endl;
+    std::cout << RED << "******************** Size : " << size() << "***************************************" << RESET
+              << std::endl;
     // std::vector<std::shared_ptr<ScintillatorBar_F>> scintBarVec = GetMuonTrack();
     std::vector<ScintillatorBar_F *> scintBarVec = GetMuonTrack();
     for (unsigned int i = 0; i < scintBarVec.size(); i++) {
@@ -132,14 +134,29 @@ ClassImp(ismran::SingleMuonTrack)
     std::cout << std::endl;
   }
 
-  bool SingleMuonTrack::IsPassingMuon(){
-	unsigned int numOfHist_layer0 = NumOfHitsInLayer(0);
-	unsigned int numOfHist_layer9 = NumOfHitsInLayer(9);
-	return ((numOfHist_layer0 > 0) && (numOfHist_layer9 > 0));
+  bool SingleMuonTrack::IsPassingMuon()
+  {
+    unsigned int numOfHist_layer0 = NumOfHitsInLayer(0);
+    unsigned int numOfHist_layer9 = NumOfHitsInLayer(9);
+    return ((numOfHist_layer0 > 0) && (numOfHist_layer9 > 0));
   }
 
-   bool SingleMuonTrack::IsUpgoingMuon(){
-  	if(fVecOfScintillators[0]->GetTStampSmall() > fVecOfScintillators[size()-1]->GetTStampSmall())
-	       return true;	
-   }
+  bool SingleMuonTrack::IsUpgoingMuon()
+  {
+    // if(fVecOfScintillators[0]->GetTStampSmall() > fVecOfScintillators[size()-1]->GetTStampSmall())
+    ScintillatorBar_F *scintBottom = nullptr;
+    ScintillatorBar_F *scintTop    = nullptr;
+    for (unsigned int i = 0; i < fVecOfScintillators.size(); i++) {
+      if (fVecOfScintillators[i]->GetLayerIndex() == 0) {
+        scintBottom = fVecOfScintillators[i];
+      }
+      if (fVecOfScintillators[i]->GetLayerIndex() == 9) {
+        scintTop = fVecOfScintillators[i];
+      }
+    }
+    if (scintBottom && scintTop) {
+      if (scintBottom->GetTStampSmall() < scintTop->GetTStampSmall()) return true;
+    } else
+      return false;
+  }
 } // namespace ismran

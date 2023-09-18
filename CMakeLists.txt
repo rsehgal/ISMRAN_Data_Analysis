@@ -88,6 +88,7 @@ SET(TESTSDIR ${TESTSDIR}
 ${CMAKE_SOURCE_DIR}/test
 ${CMAKE_SOURCE_DIR}/test/calib
 ${CMAKE_SOURCE_DIR}/test/core
+${CMAKE_SOURCE_DIR}/test/ML
 #${CMAKE_SOURCE_DIR}/test/toSchedule
 )
 

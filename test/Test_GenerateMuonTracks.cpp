@@ -94,13 +94,13 @@ int main(int argc, char *argv[])
   }
 #endif
 
-  ismran::Database d("127.0.0.1", "ismran_db", "ismran", "ismran123");
+/*  ismran::Database d("127.0.0.1", "ismran_db", "ismran", "ismran123");
   d.SetVerbose(true);
     d.Connect();
 
     d.Update(std::string("update ismran_files set passingmuons=") + std::to_string(passingMuonCounter) +
              std::string(" where fileName='") + justfilename + std::string("'"));
-
+*/
   return passingMuonCounter;
   // return 0;
 }

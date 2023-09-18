@@ -8,11 +8,22 @@
 #include "Plotter.h"
 #include <TFile.h>
 #include "ScintillatorBar_F.h"
+#include "HardwareNomenclature.h"
+#include "Helpers.h"
+
+
 int main(int argc, char *argv[])
 {
   //ismran::Analyzer_F an(argv[1],10000000);
   ismran::Analyzer_F an(argv[1],0);
-  std::vector<std::shared_ptr<ismran::ScintillatorBar_F >> vecOfScint = an.GetVectorOfScintillators();
+
+  #ifdef USE_EXISTING_MUON_PEAK_FILE
+  ismran::vecOfPeakPos = ismran::GetPeakPosVec_Direct(".", "MuonPeak.root");
+#else
+  ismran::vecOfPeakPos = an.GetPeakPosVec();
+#endif
+
+  std::vector<ismran::ScintillatorBar_F*> vecOfScint = an.GetVectorOfScintillators();
   std::cout <<"SIZE of SCINT VECTOR : " << vecOfScint.size() << std::endl;
   ismran::InitializeHistograms();
   for (unsigned int i = 0; i < vecOfScint.size(); i++) {
@@ -22,7 +33,7 @@ int main(int argc, char *argv[])
       if (vecOfScint[i]->GetBarIndex() < 96) vecOfScint[i]->Print();
     }
   }
-  std::vector<std::shared_ptr<TH1F>> vecOfQMeanHist = ismran::GetQMeanPlots(vecOfScint);
+  std::vector<TH1F*> vecOfQMeanHist = ismran::GetQMeanCorrectedPlots(vecOfScint);
 
   TFile *fp = new TFile("hists.root", "RECREATE");
   fp->cd();
