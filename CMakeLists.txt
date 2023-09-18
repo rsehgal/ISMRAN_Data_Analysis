@@ -3,14 +3,14 @@ project(PositionEstimation)
 
 #Added to detect compiler support for C++11
 include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++17" COMPILER_SUPPORTS_CXX17)
 CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-if(COMPILER_SUPPORTS_CXX11)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+if(COMPILER_SUPPORTS_CXX17)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 elseif(COMPILER_SUPPORTS_CXX0X)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 else()
-    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++17 support. Please use a different C++ compiler.")
 endif()
 
 #----------------------------------------------------------------------------
@@ -18,7 +18,8 @@ endif()
 # You can set WITH_GEANT4_UIVIS to OFF via the command line or ccmake/cmake-gui
 # to build a batch mode only executable
 #
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/modules)
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/modules)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/MODU)
 
 option(SINGLE_POINT_CALIBRATION "Use Single Point Muon Calibration" ON)
 option(VERTICAL_ARRANGEMENT "Use VERTICAL_ARRANGEMENT" ON)
@@ -54,7 +55,7 @@ endif(VERTICAL_ARRANGEMENT)
 
 #----------------------------------------------------------------------------
 find_package(ROOT REQUIRED)
-include_directories(${ROOT_INCLUDE_DIR})
+include_directories(${ROOT_INCLUDE_DIRS})
 
 find_package(MYSQL REQUIRED)
 include_directories(${MYSQL_INCLUDE_DIR})
@@ -74,11 +75,15 @@ endif(USE_PRECOMPILED_DQM_LIB)
 
 
 include_directories(${PROJECT_SOURCE_DIR}/inc)
+include_directories(${PROJECT_SOURCE_DIR})
 
 ROOT_GENERATE_DICTIONARY(G__IsmranAnalysis inc/ScintillatorBar_F.h inc/SingleMuonTrack.h inc/MuonPeakAnalyzer.h LINKDEF inc/DictLinkDef.h)
 file(GLOB analysisSources ${PROJECT_SOURCE_DIR}/src/*.cpp) 
 add_library(Analysis SHARED ${analysisSources} G__IsmranAnalysis.cxx)
 target_link_libraries(Analysis ${ROOT_LIBRARIES})
+
+#message(STATUS ${ROOT_LIBRARIES})
+message(STATUS "ROOT LIB : "${ROOT_LIBRARY_DIR})
 
 file(GLOB ROOT_FILES ${PROJECT_SOURCE_DIR}/rootfiles/*)
 #message(STATUS ${ROOT_FILES})
@@ -103,7 +108,7 @@ macro(build_executables EXECUTABLES)
   foreach(EXECUTABLE ${EXECUTABLES})
     get_filename_component(TARGET_NAME ${EXECUTABLE} NAME_WE)
     add_executable(${TARGET_NAME} ${EXECUTABLE} ${headers} ${sources})
-    target_link_libraries(${TARGET_NAME} ${ROOT_LIBRARIES} Analysis Spectrum stdc++fs ${DQM_LIB})
+    target_link_libraries(${TARGET_NAME} ${ROOT_LIBRARIES} Analysis -L${ROOT_LIBRARY_DIR} Spectrum stdc++fs ${DQM_LIB})
     #target_link_libraries(${TARGET_NAME} ${ROOT_LIBRARIES} Analysis Spectrum stdc++fs ${Dqm_LIBRARIES})
     #target_link_libraries(${TARGET_NAME} ${ROOT_LIBRARIES} Analysis Spectrum stdc++fs)
  endforeach()
