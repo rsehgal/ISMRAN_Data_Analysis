@@ -72,6 +72,7 @@ include_directories(${CMAKE_SOURCE_DIR}/ISMRAN_dqm/inc)
 SET(DQM_LIB Dqm)
 endif(USE_PRECOMPILED_DQM_LIB)
 
+add_subdirectory(Characterization)
 
 include_directories(${PROJECT_SOURCE_DIR}/inc)
 

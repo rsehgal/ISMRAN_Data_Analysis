@@ -44,8 +44,8 @@ include_directories(${PROJECT_SOURCE_DIR}/inc)
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
 
-#add_library(Characterization SHARED ${PROJECT_SOURCE_DIR}/src/CharacterizationFileReader.cpp)
-#target_link_libraries(Characterization ${ROOT_LIBRARIES})
+add_library(Characterization SHARED ${sources})
+target_link_libraries(Characterization ${ROOT_LIBRARIES} -L/home/rsehgal/BackBoneSoftwares/root-6.26.00/lib Spectrum)
 
 #add_executable (Test_Listing test/Test_Listing)
 #target_link_libraries(Test_Listing Characterization)
@@ -61,7 +61,13 @@ target_link_libraries(Test_DirListing ${ROOT_LIBRARIES})
 
 #message(STATUS ${ROOT_LIBRARIES})
 
-add_executable (Test_GenerateCalibrationFile test/anal/Test_GenerateCalibrationFile.cpp ${sources})
-target_link_libraries(Test_GenerateCalibrationFile ${ROOT_LIBRARIES} -L/home/rsehgal/BackBoneSoftwares/root-6.26.00/lib Spectrum)
+#Working
+#add_executable (Test_GenerateCalibrationFile test/anal/Test_GenerateCalibrationFile.cpp ${sources})
+#target_link_libraries(Test_GenerateCalibrationFile ${ROOT_LIBRARIES} -L/home/rsehgal/BackBoneSoftwares/root-6.26.00/lib Spectrum)
+
+#Trying with shared library
+add_executable(Test_GenerateCalibrationFile test/anal/Test_GenerateCalibrationFile.cpp)
+target_link_libraries(Test_GenerateCalibrationFile Characterization)
+
 #target_link_libraries(Test_GenerateCalibrationFile ${ROOT_LIBRARIES} Spectrum)
 
