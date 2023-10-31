@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
   ismran::vecOfPeakPos = an.GetPeakPosVec();
 #endif
 
-  std::vector<std::shared_ptr<ismran::ScintillatorBar_F>> vecOfScint = an.GetVectorOfScintillators();
+  std::vector<ismran::ScintillatorBar_F*> vecOfScint = an.GetVectorOfScintillators();
   ismran::InitializeHistograms();
   for (unsigned int i = 0; i < vecOfScint.size(); i++) {
     if (i < 5) {
@@ -47,8 +47,8 @@ int main(int argc, char *argv[])
       if (vecOfScint[i]->GetBarIndex() < 96) vecOfScint[i]->Print();
     }
   }
-  std::vector<std::shared_ptr<TH1F>> vecOfQMeanHist = ismran::GetQMeanPlots(vecOfScint);
-  std::vector<std::shared_ptr<TH1F>> vecOfQMeanCorrectedHist =
+  std::vector<TH1F*> vecOfQMeanHist = ismran::GetQMeanPlots(vecOfScint);
+  std::vector<TH1F*> vecOfQMeanCorrectedHist =
       ismran::GetQMeanCorrectedPlots(vecOfScint); //,ismran::vecOfPeakPos);
   TFile *fp = new TFile(outputFileName.c_str(), "RECREATE");
   fp->cd();

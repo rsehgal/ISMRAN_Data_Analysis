@@ -9,7 +9,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <experimental/filesystem>
+#include <filesystem>
+///include <experimental/filesystem>
 #include "colors.h"
 #include "MuonPeakAnalyzer.h"
 #ifndef USHRT_MAX
@@ -19,7 +20,8 @@ using std::cin;
 using std::cout;
 using std::endl;
 using std::string;
-using std::experimental::filesystem::directory_iterator;
+using std::filesystem::directory_iterator;
+//using std::experimental::filesystem::directory_iterator;
 
 namespace ismran {
 
@@ -61,7 +63,8 @@ std::vector<std::string> GetVectorOfFileNameInADirectory(std::string directoryPa
 {
   std::vector<std::string> vecOfFileNames;
   for (const auto &file : directory_iterator(directoryPath)) {
-    std::experimental::filesystem::path filepath = file.path();
+    std::filesystem::path filepath = file.path();
+    //std::experimental::filesystem::path filepath = file.path();
     vecOfFileNames.push_back(filepath.string());
   }
   return vecOfFileNames;

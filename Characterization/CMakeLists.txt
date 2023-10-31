@@ -29,15 +29,36 @@ project(PositionEstimation)
 #add_definitions(-DEXPERIMENTAL_FILESYSTEM)
 #endif()
 
+#include(CheckCXXCompilerFlag)
+#CHECK_CXX_COMPILER_FLAG("-std=c++17" COMPILER_SUPPORTS_CXX17)
+#if(COMPILER_SUPPORTS_CXX17)
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+#endif()
+
+#Added to detect compiler support for C++11
 include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-std=c++17" COMPILER_SUPPORTS_CXX17)
+CHECK_CXX_COMPILER_FLAG("-std=c++14" COMPILER_SUPPORTS_CXX14)
 if(COMPILER_SUPPORTS_CXX17)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+elseif(COMPILER_SUPPORTS_CXX14)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+    add_definitions(-DEXPERIMENTAL_FILESYSTEM)
+    message(STATUS "Going to use experimental filesystem. Its recommended to switch to upgraded compile with c++17 support.")
+else()
+    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++14 or C++17 support. Please use a different C++ compiler.")
 endif()
+
+if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 8.0)
+else()
+message(STATUS "@@@@@@ Adding EXPERIMENTAL_FILELSYSTEm Macro @@@@@@")
+#add_definitions(-DEXPERIMENTAL_FILESYSTEM)
+endif()
+
 
 find_package(ROOT REQUIRED)
 include_directories(${ROOT_INCLUDE_DIRS})
-#message(STATUS ${ROOT_INCLUDE_DIRS})
+message(STATUS ${ROOT_INCLUDE_DIRS})
 
 include_directories(${PROJECT_SOURCE_DIR}/inc)
 
@@ -45,7 +66,7 @@ file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
 
 add_library(Characterization SHARED ${sources})
-target_link_libraries(Characterization ${ROOT_LIBRARIES} -L/home/rsehgal/BackBoneSoftwares/root-6.26.00/lib Spectrum)
+target_link_libraries(Characterization ${ROOT_LIBRARIES} -L/home/rsehgal/BackBoneSoftwares/root/lib Spectrum)
 
 #add_executable (Test_Listing test/Test_Listing)
 #target_link_libraries(Test_Listing Characterization)

@@ -28,14 +28,17 @@ int main(int argc, char *argv[])
   std::vector<ismran::ScintillatorBar_F *> vecOfScint = an.GetVectorOfScintillators();
   std::cout << "SIZE of SCINT VECTOR : " << vecOfScint.size() << std::endl;
 
-  TH1F *hist = new TH1F("test", "test", 1000, 0, 2000.);
+  //TH1F *hist = new TH1F("test", "test", 1000, 0, 2000.);
+  TH1F *hist = new TH1F("test", "test", 1000, 0, 40.);
+  TH1F *histU = new TH1F("testU", "testU", 1000, 0, 36000.);
   for (unsigned int i = 0; i < vecOfScint.size(); i++) {
 
-        hist->Fill(eCalib->Eval(vecOfScint[i]->GetQMean()));
-    /*if (vecOfScint[i]->GetBarIndex() >= 0 && vecOfScint[i]->GetBarIndex() < 90)
+    //hist->Fill(eCalib->Eval(vecOfScint[i]->GetQMean())); //source
+    if (vecOfScint[i]->GetBarIndex() >= 0 && vecOfScint[i]->GetBarIndex() < 90)
       if (ismran::vecOfPsBars[vecOfScint[i]->GetBarIndex()] == "PS05_S2AB1006") {
         hist->Fill(eCalib->Eval(vecOfScint[i]->GetQMean()) / 1000.);
-      }*/
+        histU->Fill(vecOfScint[i]->GetQMean());
+    }
   }
 
   /*ismran::InitializeHistograms();
@@ -65,6 +68,8 @@ int main(int argc, char *argv[])
 
 */
   hist->Draw();
+   new TCanvas;
+   histU->Draw();
   fApp->Run();
   return 0;
 }

@@ -22,7 +22,7 @@ int main()
   short counter                = 0;
   TCanvas *can                 = new TCanvas("Calibration", "Calibraion");
   TSpectrum *spectrum          = new TSpectrum(1);
-  std::vector<float> energyVec = {477., 1000., 3700};
+  std::vector<float> energyVec = {477., 1062., 4201.};
   std::vector<float> peakPosVec;
   std::vector<std::string> sourceVec = GetEnergyCalibrationFiles();
   std::string barName                = directoryPath.string();
@@ -85,10 +85,12 @@ int main()
   TGraph *grE = new TGraph(peakPosVec.size(), &peakPosVec[0], &energyVec[0]);
   grE->SetMarkerStyle(8);
   // std::string barName= "PS5";//""cf->GetBarName();
-  TF1 *comptonFit = new TF1((barName + "_ECalib").c_str(), "pol1", 250, 2250);
+  //TF1 *comptonFit = new TF1((barName + "_ECalib").c_str(), "pol1", 250, 2250);
+  TF1 *comptonFit = new TF1((barName + "_ECalib").c_str(), "pol1", 0, 22500);
   grE->Fit(comptonFit, "q");
   comptonFit->Write();
-  // grE->Write();
+  grE->Draw("ap");
+  grE->Write();
   // fout->Close();
   std::cout << std::endl;
   // return 0;
